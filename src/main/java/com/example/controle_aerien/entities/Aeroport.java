@@ -1,4 +1,4 @@
-package com.example.controle_aerien.Entity;
+package com.example.controle_aerien.entities;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
