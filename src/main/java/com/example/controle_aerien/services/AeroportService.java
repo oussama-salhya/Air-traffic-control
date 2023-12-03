@@ -2,6 +2,7 @@ package com.example.controle_aerien.services;
 
 import com.example.controle_aerien.dao.AeroportRepository;
 import com.example.controle_aerien.entities.Aeroport;
+import com.example.controle_aerien.entities.Avion;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class AeroportService {
     public void deleteAeroportById(Long id)
     {
         aeroportRepo.deleteById(id);
+    }
+    public List<Avion> getAllAvionenSolByAeroport(Aeroport aeroport)
+    {
+        return aeroport.getAvionsSol();
     }
 
 }

@@ -12,25 +12,18 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
+
 public class DistanceAeroport {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private DistanceAeroportId distanceAeroportId;
 
     private double distance;
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_1_id")
-    private Aeroport aeroport1;
+    /**/
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_2_id")
-    private Aeroport aeroport2;
-
-    public DistanceAeroport(double distance, Aeroport aeroport1, Aeroport aeroport2) {
+    public DistanceAeroport(DistanceAeroportId distanceAeroportId ,double distance) {
+        this.distanceAeroportId=distanceAeroportId;
         this.distance = distance;
-        this.aeroport1 = aeroport1;
-        this.aeroport2 = aeroport2;
     }
 }
