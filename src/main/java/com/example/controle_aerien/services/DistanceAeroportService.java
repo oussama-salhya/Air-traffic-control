@@ -2,6 +2,7 @@ package com.example.controle_aerien.services;
 
 import com.example.controle_aerien.dao.DistanceAeroportRepository;
 import com.example.controle_aerien.entities.DistanceAeroport;
+import com.example.controle_aerien.entities.DistanceAeroportId;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class DistanceAeroportService {
     {
         distanceAeroportRepository.save(distanceAeroport);
     }
-    public DistanceAeroport getDistanceAeroportById(Long id)
+    public DistanceAeroport getDistanceAeroportById(DistanceAeroportId id)
     {
         return distanceAeroportRepository.findById(id).get();
     }
