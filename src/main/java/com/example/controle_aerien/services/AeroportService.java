@@ -16,8 +16,6 @@ public class AeroportService {
     @Autowired
     private AeroportRepository aeroportRepo;
 
-
-
     public void addAeroport(Aeroport aeroport)
     {
         aeroportRepo.save(aeroport);
@@ -29,6 +27,10 @@ public class AeroportService {
     public List<Aeroport> getAllAeroport()
     {
         return aeroportRepo.findAll();
+    }
+    public void deleteAeroportById(Long id)
+    {
+        aeroportRepo.deleteById(id);
     }
 
 }
