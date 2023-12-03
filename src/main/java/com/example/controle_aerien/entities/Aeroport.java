@@ -30,6 +30,12 @@ public class Aeroport {
     @OneToOne(cascade = CascadeType.ALL)
     private Point position;
 
+    @OneToMany(mappedBy = "distanceAeroportId.aeroport1")
+    private List<DistanceAeroport> distancesFromHere;
+
+    @OneToMany(mappedBy = "distanceAeroportId.aeroport2")
+    private List<DistanceAeroport> distancesToHere;
+
     private double secteur;
 
     @OneToMany(cascade = CascadeType.ALL)

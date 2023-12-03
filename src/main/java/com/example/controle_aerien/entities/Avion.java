@@ -27,14 +27,6 @@ public class Avion {
     private double capacite;
     private boolean disponibilite;
 
-    // Many to one
-    @ManyToOne
-    @JoinColumn(name = "aeroport_id")
-    private Aeroport aeroport;
-
-    // One to one
-    @OneToOne(mappedBy = "avion", cascade = CascadeType.ALL)
-    private Vol vol;
 
     public Avion(String nom, TypeAvion type, double consommation, double capacite, boolean disponibilite) {
         this.nom = nom;
