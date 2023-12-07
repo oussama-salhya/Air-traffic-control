@@ -17,7 +17,7 @@ public class AeroportService {
     @Autowired
     private AeroportRepository aeroportRepo;
 
-    public void addAeroport(Aeroport aeroport)
+    public void saveAeroport(Aeroport aeroport)
     {
         aeroportRepo.save(aeroport);
     }
