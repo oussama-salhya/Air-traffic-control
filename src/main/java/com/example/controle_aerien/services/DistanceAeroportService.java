@@ -16,7 +16,7 @@ public class DistanceAeroportService {
     @Autowired
     private DistanceAeroportRepository distanceAeroportRepository;
 
-    public void addDistanceAeroport(DistanceAeroport distanceAeroport)
+    public void saveDistanceAeroport(DistanceAeroport distanceAeroport)
     {
         distanceAeroportRepository.save(distanceAeroport);
     }
