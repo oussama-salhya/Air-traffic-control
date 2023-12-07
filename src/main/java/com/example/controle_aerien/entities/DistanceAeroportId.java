@@ -15,7 +15,8 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DistanceAeroportId implements Serializable {
+public class
+git DistanceAeroportId implements Serializable {
 
     private static final long serialVersionUID=1L;
 

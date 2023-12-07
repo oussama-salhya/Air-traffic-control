@@ -16,15 +16,16 @@ public class AvionService {
         return avionrepository.findById(idAvion).get();
     }
     //update and save avion
-    public void addAvion(Avion avion){
+    public void saveAvion(Avion avion){
         avionrepository.save(avion);
     }
-    public List<Avion> getALLAvion(){
+    public List<Avion> getALLAvions(){
         return avionrepository.findAll();
     }
-    public void deleteAvion(Avion avion){
+    public void deleteAvionByID(Long id){
         if(avionrepository.count()==0)
             return;
-        else avionrepository.delete(avion);
+        else avionrepository.deleteById(id);
     }
+
 }
