@@ -7,11 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "points")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
+@Table(name="points",uniqueConstraints = @UniqueConstraint(columnNames = {"x","y"}))
 public class Point {
 
     @Id
@@ -21,8 +21,7 @@ public class Point {
     private double x;
     private double y;
 
-    @OneToOne
-    @JoinColumn(name = "aeroport_id")
+    @OneToOne(mappedBy = "position")
     private Aeroport aeroport;
 
     public Point(double x, double y) {
