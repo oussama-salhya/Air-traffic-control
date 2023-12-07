@@ -16,7 +16,7 @@ import java.util.List;
 public class VolService {
     @Autowired
     private VolRepository volRepository;
-    public void addVol(Vol vol)
+    public void saveVol(Vol vol)
     {
         volRepository.save(vol);
     }
