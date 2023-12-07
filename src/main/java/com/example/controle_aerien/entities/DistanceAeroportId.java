@@ -16,8 +16,11 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+
 @Component
 public class DistanceAeroportId implements Serializable {
+
 
     private static final long serialVersionUID=1L;
 

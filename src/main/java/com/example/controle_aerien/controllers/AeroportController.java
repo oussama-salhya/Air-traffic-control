@@ -26,41 +26,35 @@ public class AeroportController {
 
 
     @GetMapping("/aeroports")
-    public List<Aeroport> getAllAeroport()
-    {
+    public List<Aeroport> getAllAeroport() {
         return aeroportService.getAllAeroport();
     }
 
     @GetMapping("/aeroports/{id}")
-    public ResponseEntity<Aeroport> getAeroportById(@PathVariable Long id)
-    {
+    public ResponseEntity<Aeroport> getAeroportById(@PathVariable Long id) {
         Aeroport aeroport = aeroportService.getAeroportById(id);
-        if(aeroport!=null)
-        return ResponseEntity.ok(aeroport);//200 OK
+        if (aeroport != null)
+            return ResponseEntity.ok(aeroport);//200 OK
         else
             return ResponseEntity.notFound().build();//404 NOT FOUND
     }
 
     @PostMapping("/create_aeroport")
-    public void saveAeroport(@RequestBody Aeroport newaeroport)
-    {
+    public void saveAeroport(@RequestBody Aeroport newaeroport) {
         aeroportService.saveAeroport(newaeroport);
 
-        List<DistanceAeroport>distancesAeroports;
+        List<DistanceAeroport> distancesAeroports;
         distancesAeroports = aeroportService.calculerDistancesAeroports(newaeroport);
-        for(DistanceAeroport distanceAeroport : distancesAeroports)
-        {
+        for (DistanceAeroport distanceAeroport : distancesAeroports) {
             distanceAeroportService.saveDistanceAeroport(distanceAeroport);
         }
     }
 
     @PutMapping("/update_aeroport/{id}")
-    public ResponseEntity<Aeroport> updateAeroport(@PathVariable Long id , @RequestBody Aeroport newaeroport)
-    {
+    public ResponseEntity<Aeroport> updateAeroport(@PathVariable Long id, @RequestBody Aeroport newaeroport) {
         Aeroport oldaeroport = aeroportService.getAeroportById(id);
 
-        if(oldaeroport == null)
-        {
+        if (oldaeroport == null) {
             return ResponseEntity.notFound().build();
         }
         oldaeroport.setNom(newaeroport.getNom());
@@ -80,10 +74,5 @@ public class AeroportController {
         oldaeroport.setDistancesToHere(newaeroport.getDistancesToHere());
         aeroportService.saveAeroport(oldaeroport);
         return ResponseEntity.ok(oldaeroport);
-    }
-    @DeleteMapping ("/delete_aeroport/{id}")
-    public void deleteAeroportById(@PathVariable Long id)
-    {
-        aeroportService.deleteAeroportById(id);
     }
 }
