@@ -1,6 +1,7 @@
 package com.example.controle_aerien.services;
 
 import com.example.controle_aerien.dao.AeroportRepository;
+import com.example.controle_aerien.dao.DistanceAeroportRepository;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.DistanceAeroport;
@@ -21,10 +22,17 @@ public class AeroportService {
 
     @Autowired
     private AeroportRepository aeroportRepo;
+    @Autowired
+    private DistanceAeroportService distanceAeroportService;
 
     public void saveAeroport(Aeroport aeroport)
     {
         aeroportRepo.save(aeroport);
+        List<DistanceAeroport> distancesAeroports;
+        distancesAeroports = calculerDistancesAeroports(aeroport);
+        for (DistanceAeroport distanceAeroport : distancesAeroports) {
+            distanceAeroportService.saveDistanceAeroport(distanceAeroport);
+        }
     }
     public Aeroport getAeroportById(Long id)
     {
@@ -52,7 +60,7 @@ public class AeroportService {
         {
             for(Aeroport aeroport : aerportList)
             {
-                if(aeroport != newaeroport) {
+                if(aeroport.getId() != newaeroport.getId()) {
                     double distance = Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2));
 
                     DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport,aeroport);

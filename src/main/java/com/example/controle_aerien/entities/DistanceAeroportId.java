@@ -25,11 +25,11 @@ public class DistanceAeroportId implements Serializable {
     private static final long serialVersionUID=1L;
 
     @ManyToOne
-    @JoinColumn(name = "aeroport_1_id")
+    @JoinColumn(name = "aeroport_1_id",referencedColumnName = "id")
     private Aeroport aeroport1;
 
     @ManyToOne
-    @JoinColumn(name = "aeroport_2_id")
+    @JoinColumn(name = "aeroport_2_id",referencedColumnName = "id")
     private Aeroport aeroport2;
 
     @Override

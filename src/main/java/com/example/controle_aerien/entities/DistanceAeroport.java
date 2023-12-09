@@ -22,7 +22,6 @@ public class DistanceAeroport {
     private double distance;
 
     /**/
-
     public DistanceAeroport(DistanceAeroportId distanceAeroportId ,double distance) {
         this.distanceAeroportId=distanceAeroportId;
         this.distance = distance;

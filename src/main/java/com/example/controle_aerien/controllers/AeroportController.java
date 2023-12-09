@@ -42,12 +42,6 @@ public class AeroportController {
     @PostMapping("/create_aeroport")
     public void saveAeroport(@RequestBody Aeroport newaeroport) {
         aeroportService.saveAeroport(newaeroport);
-
-        List<DistanceAeroport> distancesAeroports;
-        distancesAeroports = aeroportService.calculerDistancesAeroports(newaeroport);
-        for (DistanceAeroport distanceAeroport : distancesAeroports) {
-            distanceAeroportService.saveDistanceAeroport(distanceAeroport);
-        }
     }
 
     @PutMapping("/update_aeroport/{id}")
