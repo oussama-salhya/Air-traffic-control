@@ -41,8 +41,8 @@ public class Avion {
         this.type = type;
         this.consommation = consommation;
         this.capacite = capacite;
-        updateDisponibilite();
-    }
+        this.disponibilite = true;
+}
 
 
     //DONT FORGET TO WORK ON DISPONIBILITE ON THE CONDITIONS AND STUFF
