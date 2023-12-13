@@ -61,13 +61,14 @@ public class AeroportService {
             for(Aeroport aeroport : aerportList)
             {
                 if(aeroport.getId() != newaeroport.getId()) {
-                    double distance = Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2));
+                    int distance = (int) Math.round(Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2)));
+                    if(distance <=200) {
+                        DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport, aeroport);
 
-                    DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport,aeroport);
+                        DistanceAeroport distanceAeroport = new DistanceAeroport(distanceAeroportId, distance);
 
-                    DistanceAeroport distanceAeroport = new DistanceAeroport(distanceAeroportId,distance);
-
-                    distancesAeroports.add(distanceAeroport);
+                        distancesAeroports.add(distanceAeroport);
+                    }
                 }
             }
         }

@@ -1,5 +1,11 @@
 package com.example.controle_aerien.Djikstra.services;
 
+import com.example.controle_aerien.Djikstra.classes.Pair;
+import com.example.controle_aerien.entities.DistanceAeroport;
+import com.example.controle_aerien.services.AeroportService;
+import com.example.controle_aerien.services.DistanceAeroportService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.example.controle_aerien.Djikstra.classes.Edge;
 import com.example.controle_aerien.Djikstra.classes.Graph;
@@ -10,56 +16,82 @@ import java.util.*;
 
 @Service
 public class DjikstraImpl {
+    @Autowired
+    private  AeroportService aeroportService;
 
-    public static Map<Long, Double> findShortestPaths(Graph graph, Long start, Long destination) {
-        Map<Long, Double> distances = new HashMap<>();
-        Map<Long, Long> previousNodes = new HashMap<>();
-        PriorityQueue<Node> minHeap = new PriorityQueue<>(Comparator.comparingDouble(Node::getDistance));
+    @Autowired
+    private  DistanceAeroportService distanceAeroportService;
 
-        distances.put(start, 0.0);
-        minHeap.add(new Node(start, 0.0));
+    //IF RETURN NULL MEANS NO PATH IS FROM aeroport_depart TO aeroport_arriv
+    public Integer[] djisktraalgo(long aeroport_depart, long aeroport_arriv) {
 
-        while (!minHeap.isEmpty()) {
-            Node currentNode = minHeap.poll();
-            Long currentVertex = currentNode.getId();
-            double currentDistance = currentNode.getDistance();
+        List<DistanceAeroport> distanceAeroportList = distanceAeroportService.getAllDistanceAeroport();
 
-            if (distances.get(currentVertex) < currentDistance) {
+        String[] tab = new String[0];
+
+        int n = aeroportService.getAllAeroport().size();
+
+        int vtces = n;
+        ArrayList<Edge>[] graph = new ArrayList[vtces + 1];
+
+        for (int i = 0; i < vtces + 1; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        // Read the number of edges edges
+        int edges = distanceAeroportService.getAllDistanceAeroport().size();
+
+        // Read the details of each of the edge.
+        for (DistanceAeroport distanceAeroport : distanceAeroportList) {
+            int v1 = (int) distanceAeroport.getDistanceAeroportId().getAeroport1().getId();
+            int v2 = (int) distanceAeroport.getDistanceAeroportId().getAeroport2().getId();
+            int wt = distanceAeroport.getDistance();
+            graph[v1].add(new Edge(v1, v2, wt));
+            graph[v2].add(new Edge(v2, v1, wt));
+        }
+
+        // Input the source vertex
+        int src = (int) aeroport_depart;
+        boolean[] visited = new boolean[n + 1];
+
+        // Priority Queue to hold the pairs.
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        pq.add(new Pair(src, src + "", 0));
+
+
+        while (pq.size() > 0) {
+
+            Pair rem = pq.remove();
+            if (visited[rem.vtx] == true) {
                 continue;
             }
 
-            for (Edge neighborEdge : graph.getNeighbors(currentVertex)) {
-                Long neighbor = neighborEdge.getAeroportArriverId();
-                double newDistance = currentDistance + neighborEdge.getWeight();
 
-                if (newDistance < distances.getOrDefault(neighbor, Double.MAX_VALUE)) {
-                    distances.put(neighbor, newDistance);
-                    previousNodes.put(neighbor, currentVertex); // Keep track of the previous node for constructing the path
-                    minHeap.add(new Node(neighbor, newDistance));
+            visited[rem.vtx] = true;
+            if (rem.vtx == (int) aeroport_arriv) {
+                System.out.println(rem.vtx + " via " + rem.psf + " @ " + rem.wsf);
+                tab = rem.psf.split("->");
+            }
+
+
+            for (Edge e : graph[rem.vtx]) {
+                if (visited[e.getNbr()] == false) {
+                    pq.add(new Pair(e.getNbr(), rem.psf + "->" + e.getNbr(), rem.wsf + e.getWt()));
                 }
             }
-        }
 
-        // If you need to find the shortest path to a specific destination, you can construct the path here
-        if (destination != null) {
-            List<Long> path = constructPath(start, destination, previousNodes);
-            System.out.println("Shortest path from " + start + " to " + destination + ": " + path);
         }
-
-        return distances;
+        if(tab != null && tab.length > 0)
+        {
+                Integer[] tabint = new Integer[tab.length];
+                for(int i=0 ; i < tab.length ; i++)
+                {
+                    tabint[i] = Integer.parseInt(tab[i]);
+                }
+            return tabint;
+        }
+        return null;
     }
 
-    private static List<Long> constructPath(Long start, Long destination, Map<Long, Long> previousNodes) {
-        List<Long> path = new ArrayList<>();
-        Long current = destination;
-
-        while (current != null) {
-            path.add(current);
-            current = previousNodes.get(current);
-        }
-
-        Collections.reverse(path);
-        return path;
-    }
 }
 

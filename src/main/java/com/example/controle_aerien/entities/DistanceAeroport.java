@@ -19,10 +19,10 @@ public class DistanceAeroport {
     @EmbeddedId
     private DistanceAeroportId distanceAeroportId;
 
-    private double distance;
+    private int distance;
 
     /**/
-    public DistanceAeroport(DistanceAeroportId distanceAeroportId ,double distance) {
+    public DistanceAeroport(DistanceAeroportId distanceAeroportId ,int distance) {
         this.distanceAeroportId=distanceAeroportId;
         this.distance = distance;
     }

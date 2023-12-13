@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Edge {
-    public Long AeroportDepartId;
-    public Long AeroportArriverId;
-    public double weight;
+
+    int src; // One of the nodes
+    int nbr; // The second node forming the edge
+    int wt; // Weight of the edge
+
 }
