@@ -31,8 +31,8 @@ public class Vol {
     private Date heureDepart;
     private Date heureArrivee;
 
-    @OneToOne
-    @JoinColumn(name = "avion_id")
+    @ManyToOne
+    @JoinColumn(name = "avion_id" , referencedColumnName = "id")
     private Avion avion;
 
     public Vol(Aeroport aeroportDepart, Aeroport aeroportArrivee, Date heureDepart, Date heureArrivee, Avion avion) {
@@ -41,6 +41,7 @@ public class Vol {
         this.heureDepart = heureDepart;
         this.heureArrivee = heureArrivee;
         this.avion = avion;
-        avion.setDisponibilite(false); // false dans l'affectation
+        avion.setDisponibilite(true); // false dans l'affectation
     }
+
 }

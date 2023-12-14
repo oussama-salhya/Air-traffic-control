@@ -16,11 +16,6 @@ public class Avion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public Avion (String nom)
-    {
-        super();
-        this.nom=nom;
-    }
 
     private String nom;
 
@@ -35,14 +30,24 @@ public class Avion {
     @JoinColumn(name ="aerport_id",referencedColumnName = "id")
     private Aeroport aeroport;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Point position;
 
-    public Avion(String nom, TypeAvion type, double consommation, double capacite, boolean disponibilite) {
+
+    /*public Avion(String nom, TypeAvion type, double consommation, double capacite, boolean disponibilite) {
         this.nom = nom;
         this.type = type;
         this.consommation = consommation;
         this.capacite = capacite;
         this.disponibilite = true;
-}
+}*/
+
+    public Avion(String nom) {
+        super();
+        this.nom=nom;
+        this.type=TypeAvion.LONG;
+        this.disponibilite = true;
+    }
 
 
     //DONT FORGET TO WORK ON DISPONIBILITE ON THE CONDITIONS AND STUFF

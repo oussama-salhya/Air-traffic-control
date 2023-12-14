@@ -4,32 +4,38 @@ import com.example.controle_aerien.Djikstra.classes.Edge;
 import com.example.controle_aerien.Djikstra.classes.Graph;
 import com.example.controle_aerien.Djikstra.classes.Pair;
 import com.example.controle_aerien.Djikstra.services.DjikstraImpl;
-import com.example.controle_aerien.entities.Aeroport;
-import com.example.controle_aerien.entities.DistanceAeroport;
-import com.example.controle_aerien.entities.Point;
+import com.example.controle_aerien.entities.*;
 import com.example.controle_aerien.exceptions.AeroportNotfound;
 import com.example.controle_aerien.services.AeroportService;
+import com.example.controle_aerien.services.AvionService;
 import com.example.controle_aerien.services.DistanceAeroportService;
+import com.example.controle_aerien.services.VolService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @SpringBootApplication
+@EnableScheduling
 public class ControleAerienApplication {
 
     @Autowired
     private AeroportService aeroportService;
 
     @Autowired
+    private AvionService avionService;
+
+    @Autowired
     private DistanceAeroportService distanceAeroportService;
+
+    @Autowired
+    private VolService volService;
 
     @Autowired
     DjikstraImpl djik ;
@@ -60,6 +66,30 @@ public class ControleAerienApplication {
         aeroportService.saveAeroport(aeroport7);
         aeroportService.saveAeroport(aeroport8);
 
+        Avion avion1 = new Avion("avion1");
+
+        avionService.saveAvion(avion1);
+
+        Avion avion = avionService.getALLAvions().get(0);
+
+        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion.getId());
+
+        Vol vol = volService.addVol(aeroport0.getId(),aeroport4.getId());
+
+        volService.StartVol(vol.getId());
+        /*
+        List<DistanceAeroport> distanceAeroportList = distanceAeroportService.getAllDistanceAeroport();
+
+        for(DistanceAeroport ds : distanceAeroportList)
+        {
+            System.out.println(ds.getDistance());
+        }
+
+        HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
+
+        for (Map.Entry<String, Integer> entry : dji.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }*/
     }
 }
 
