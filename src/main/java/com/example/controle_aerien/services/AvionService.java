@@ -17,6 +17,21 @@ public class AvionService {
     }
     //update and save avion
     public void saveAvion(Avion avion){
+        if(avion.getType().equals("COURT"))
+        {
+            avion.setConsommation(4);
+            avion.setCapacite(20000);
+        }
+        else if(avion.getType().equals("MOYEN"))
+        {
+            avion.setConsommation(5);
+            avion.setCapacite(40000);
+        }
+        else if(avion.getType().equals("LONG"))
+        {
+            avion.setConsommation(6);
+            avion.setCapacite(80000);
+        }
         avionrepository.save(avion);
     }
     public List<Avion> getALLAvions(){

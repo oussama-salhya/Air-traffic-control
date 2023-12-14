@@ -1,6 +1,7 @@
 package com.example.controle_aerien.services;
 
 import com.example.controle_aerien.dao.AeroportRepository;
+import com.example.controle_aerien.dao.DistanceAeroportRepository;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.DistanceAeroport;
@@ -21,10 +22,17 @@ public class AeroportService {
 
     @Autowired
     private AeroportRepository aeroportRepo;
+    @Autowired
+    private DistanceAeroportService distanceAeroportService;
 
     public void saveAeroport(Aeroport aeroport)
     {
         aeroportRepo.save(aeroport);
+        List<DistanceAeroport> distancesAeroports;
+        distancesAeroports = calculerDistancesAeroports(aeroport);
+        for (DistanceAeroport distanceAeroport : distancesAeroports) {
+            distanceAeroportService.saveDistanceAeroport(distanceAeroport);
+        }
     }
     public Aeroport getAeroportById(Long id)
     {
@@ -52,14 +60,15 @@ public class AeroportService {
         {
             for(Aeroport aeroport : aerportList)
             {
-                if(aeroport != newaeroport) {
-                    double distance = Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2));
+                if(aeroport.getId() != newaeroport.getId()) {
+                    int distance = (int) Math.round(Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2)));
+                    if(distance <=200) {
+                        DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport, aeroport);
 
-                    DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport,aeroport);
+                        DistanceAeroport distanceAeroport = new DistanceAeroport(distanceAeroportId, distance);
 
-                    DistanceAeroport distanceAeroport = new DistanceAeroport(distanceAeroportId,distance);
-
-                    distancesAeroports.add(distanceAeroport);
+                        distancesAeroports.add(distanceAeroport);
+                    }
                 }
             }
         }

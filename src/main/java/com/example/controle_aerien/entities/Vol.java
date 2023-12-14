@@ -21,11 +21,11 @@ public class Vol {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "aeroport_depart_id")
+    @JoinColumn(name = "aeroport_depart_id",referencedColumnName = "id")
     private Aeroport aeroportDepart;
 
     @ManyToOne
-    @JoinColumn(name = "aeroport_arrivee_id")
+    @JoinColumn(name = "aeroport_arrivee_id",referencedColumnName = "id")
     private Aeroport aeroportArrivee;
 
     private Date heureDepart;

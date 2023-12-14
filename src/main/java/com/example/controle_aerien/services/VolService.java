@@ -3,6 +3,7 @@ package com.example.controle_aerien.services;
 import com.example.controle_aerien.dao.AeroportRepository;
 import com.example.controle_aerien.dao.VolRepository;
 import com.example.controle_aerien.entities.Aeroport;
+import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.Vol;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,13 @@ public class VolService {
     {
         volRepository.deleteById(Id);
     }
+
+    public Vol AddAvionToVol(Long id)
+    {
+        Vol vol = volRepository.findById(id).get();
+        Avion avion = vol.getAeroportDepart().getAvionsSol().get(0);
+        vol.setAvion(avion);
+        return volRepository.save(vol);
+    }
+
 }

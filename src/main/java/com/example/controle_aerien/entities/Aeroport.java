@@ -16,6 +16,8 @@ public class Aeroport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private int idtest;
+
     private String nom;
     private int nbPiste;
     private int nbPlaceSol;
@@ -36,12 +38,19 @@ public class Aeroport {
 
     private double secteur;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()//mappedBy = "aeroport"
     private List<Avion> avionsSol;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     private List<Avion> avionsVol;
 
     private boolean disponibilite;
+
+    public Aeroport (int idtest, Point position)
+    {
+        super();
+        this.idtest=idtest;
+        this.position=position;
+    }
 
 }
