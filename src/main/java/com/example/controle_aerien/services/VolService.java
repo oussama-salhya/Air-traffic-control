@@ -25,6 +25,8 @@ public class VolService {
     DjikstraImpl djik ;
     @Autowired
     private AvionService avionService;
+    @Autowired
+    private AeroportRepository aeroportRepository;
 
     public void saveVol(Vol vol)
     {
@@ -115,10 +117,13 @@ public class VolService {
                 if(vol.getAeroportArrivee().getAvionsSol().size() < vol.getAeroportArrivee().getNbPlaceSol())
                 {
                     vol.getAeroportArrivee().getAvionsVol().remove(vol.getAvion());
+                    aeroportService.removeAvionFromAvionsVol(vol.getAeroportArrivee().getId(),vol.getAvion());
                     vol.getAeroportArrivee().getAvionsSol().add(vol.getAvion());
                     aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    return;
                 }
             }
+            System.out.println("ARRIVED");
 
         }
     }
@@ -162,12 +167,16 @@ public class VolService {
                         System.out.println("AvionAV : " + avion.getId());
                     }
                     vol.getAvion().setAeroport(vol.getAeroportArrivee());
+                    System.out.println("1--------------------------");
                     vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
+                    aeroportService.removeAvionFromAvionsVol(vol.getAeroportDepart().getId(),vol.getAvion());
+                    System.out.println("2--------------------------");
                     aeroportService.saveAeroport(vol.getAeroportDepart());
+                    System.out.println("3--------------------------");
                     vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
-                    avionService.saveAvion(vol.getAvion());
-
-                    //aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    System.out.println("4--------------------------");
+                    aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    System.out.println("5--------------------------");
                 }
                 speed=speed-20;
                 System.out.println(speed);

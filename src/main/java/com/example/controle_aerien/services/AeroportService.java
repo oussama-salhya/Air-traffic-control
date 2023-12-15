@@ -35,6 +35,12 @@ public class AeroportService {
             distanceAeroportService.saveDistanceAeroport(distanceAeroport);
         }
     }
+    void removeAvionFromAvionsVol(long aeroportId, Avion avion) {
+        aeroportRepo.removeAvionFromAvionsVol(aeroportId, avion);
+    }
+    void removeAvionFromAvionsSol(long aeroportId, Avion avion) {
+        aeroportRepo.removeAvionFromAvionsSol(aeroportId, avion);
+    }
     public Aeroport getAeroportById(Long id)
     {
         return aeroportRepo.findById(id).get();

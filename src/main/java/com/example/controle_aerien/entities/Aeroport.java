@@ -2,6 +2,7 @@ package com.example.controle_aerien.entities;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name="aeroports")
@@ -45,7 +46,6 @@ public class Aeroport {
     private List<Avion> avionsVol;
 
     private boolean disponibilite;
-
     public Aeroport (int idtest, Point position)
     {
         super();
