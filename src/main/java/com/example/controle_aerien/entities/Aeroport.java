@@ -38,10 +38,10 @@ public class Aeroport {
 
     private double secteur;
 
-    @OneToMany()//mappedBy = "aeroport"
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Avion> avionsSol;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Avion> avionsVol;
 
     private boolean disponibilite;
@@ -51,6 +51,9 @@ public class Aeroport {
         super();
         this.idtest=idtest;
         this.position=position;
+        this.disponibilite=true;
+        this.nbPlaceSol=5;
     }
+
 
 }

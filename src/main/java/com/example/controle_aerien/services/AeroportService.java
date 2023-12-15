@@ -1,12 +1,11 @@
 package com.example.controle_aerien.services;
 
 import com.example.controle_aerien.dao.AeroportRepository;
+import com.example.controle_aerien.dao.AvionRepository;
 import com.example.controle_aerien.dao.DistanceAeroportRepository;
-import com.example.controle_aerien.entities.Aeroport;
-import com.example.controle_aerien.entities.Avion;
-import com.example.controle_aerien.entities.DistanceAeroport;
-import com.example.controle_aerien.entities.DistanceAeroportId;
+import com.example.controle_aerien.entities.*;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,8 @@ public class AeroportService {
     private AeroportRepository aeroportRepo;
     @Autowired
     private DistanceAeroportService distanceAeroportService;
+    @Autowired
+    private AvionService avionService;
 
     public void saveAeroport(Aeroport aeroport)
     {
@@ -73,6 +74,18 @@ public class AeroportService {
             }
         }
         return distancesAeroports;
+    }
+    public Aeroport AddAvionToAeroport(Long idAero , Long idAvion)
+    {
+        Aeroport aeroport = aeroportRepo.findById(idAero).get();
+        Avion avion = avionService.getAvionById(idAvion);
+        if(aeroport.getAvionsSol().size() < aeroport.getNbPlaceSol() && aeroport.isDisponibilite() && avion.isDisponibilite()) {
+            avion.setAeroport(aeroport);
+            avion.setPosition(new Point(aeroport.getPosition().getX(),aeroport.getPosition().getY()));
+            avionService.saveAvion(avion);
+            aeroport.getAvionsSol().add(avion);
+        }
+        return aeroportRepo.save(aeroport);
     }
 
 }
