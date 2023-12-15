@@ -93,7 +93,8 @@ public class VolService {
             // Assuming avion has x and y coordinates
             double currentX = vol.getAvion().getPosition().getX();
             double currentY = vol.getAvion().getPosition().getY();
-            Integer speed = 500;
+            vol.getAvion().setSpeed(400);
+            Integer speed = vol.getAvion().getSpeed();
             while (!avionReachedDestination(currentX, currentY, aeroportArriveeId)) {
                 // Update avion position and display progress
                 speed = updateAvionPosition(vol,aeroportArriveeId,speed);
@@ -109,8 +110,17 @@ public class VolService {
                     Thread.currentThread().interrupt();
                 }
             }
+            while(avionReachedDestination(vol.getAvion().getPosition().getX(), vol.getAvion().getPosition().getY(), aeroportArriveeId)) {
+
+                if(vol.getAeroportArrivee().getAvionsSol().size() < vol.getAeroportArrivee().getNbPlaceSol())
+                {
+                    vol.getAeroportArrivee().getAvionsVol().remove(vol.getAvion());
+                    vol.getAeroportArrivee().getAvionsSol().add(vol.getAvion());
+                    aeroportService.saveAeroport(vol.getAeroportArrivee());
+                }
+            }
+
         }
-        System.out.println("YOUR PLANE REACHED ITS DESTINATION!!!!!!!!!!");
     }
 
     private void displayProgress(Vol vol) {
@@ -122,43 +132,94 @@ public class VolService {
         Aeroport aeroportArrivee = aeroportService.getAeroportById(aeroportArriveeId);
         if (aeroportArrivee != null) {
             // Assuming a simple linear movement for demonstration purposes
-            double deltaX = aeroportArrivee.getPosition().getX() - vol.getAvion().getPosition().getX();
-            double deltaY = aeroportArrivee.getPosition().getY() - vol.getAvion().getPosition().getY();
+            double deltaXA = aeroportArrivee.getPosition().getX() - vol.getAvion().getPosition().getX();
+            double deltaXD = vol.getAeroportDepart().getPosition().getX() - vol.getAvion().getPosition().getX();
+            double deltaYA = aeroportArrivee.getPosition().getY() - vol.getAvion().getPosition().getY();
+            double deltaYD = vol.getAeroportDepart().getPosition().getY() - vol.getAvion().getPosition().getY();
             double newX;
             double newY;
 
-            // Calculate distance and direction
-            double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-            System.out.println("distance :" + distance);
-            /*if(distance < 10)
+            // Calculate distanceAvionArriv and direction
+            double distanceAvionArriv = Math.sqrt(deltaXA * deltaXA + deltaYA * deltaYA);
+            double distanceAvionDepart = Math.sqrt(deltaXD * deltaXD + deltaYD * deltaYD);
+
+            /*if(distanceAvionArriv < 10)
             {
                  newX = vol.getAeroportArrivee().getPosition().getX();
                  newY = vol.getAeroportArrivee().getPosition().getY();
             }*/
-            if(distance < 50)
+            if(distanceAvionArriv < 50)//ATTERISSAGE
             {
+                if(vol.getAeroportDepart().getAvionsVol().contains(vol.getAvion()))
+                {
+                    System.out.println("ATTERISSAGE--------------------------");
+                    for(Avion avion : vol.getAeroportDepart().getAvionsVol())
+                    {
+                        System.out.println("AvionDV : " + avion.getId());
+                    }
+                    for(Avion avion : vol.getAeroportArrivee().getAvionsVol())
+                    {
+                        System.out.println("AvionAV : " + avion.getId());
+                    }
+                    vol.getAvion().setAeroport(vol.getAeroportArrivee());
+                    vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
+                    aeroportService.saveAeroport(vol.getAeroportDepart());
+                    vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
+                    avionService.saveAvion(vol.getAvion());
+
+                    //aeroportService.saveAeroport(vol.getAeroportArrivee());
+                }
                 speed=speed-20;
                 System.out.println(speed);
             }
-                double directionX = deltaX / distance;
-                double directionY = deltaY / distance;
+            if(distanceAvionDepart < 50)//DECOLAGE
+            {
+                if(vol.getAeroportDepart().getAvionsSol().contains(vol.getAvion()))
+                {
+                    System.out.println("DECOLAGE--------------------------");
+                    for(Avion avion : vol.getAeroportDepart().getAvionsSol())
+                    {
+                        System.out.println("AvionDS : " + avion.getId());
+                    }
+                    for(Avion avion : vol.getAeroportDepart().getAvionsVol())
+                    {
+                        System.out.println("AvionDV : " + avion.getId());
+                    }
+                    vol.getAeroportDepart().getAvionsSol().remove(vol.getAvion());
+                    vol.getAeroportDepart().getAvionsVol().add(vol.getAvion());
+                    aeroportService.saveAeroport(vol.getAeroportDepart());
+                }
+                speed=speed+20;
+                System.out.println(speed);
+            }
 
-                System.out.println("direc x : " + directionX);
-                System.out.println("direc y : " + directionY);
+                double directionX = deltaXA / distanceAvionArriv;
+                double directionY = deltaYA / distanceAvionArriv;
 
-                // Calculate the distance to move based on speed (e.g., 100 km/h)
-                double distanceToMove = speed / 60.0; // Convert speed to distance per second
+
+
+                // Calculate the distanceAvionArriv to move based on speed (e.g., 100 km/h)
+                double distanceAvionArrivToMove = speed / 60.0; // Convert speed to distanceAvionArriv per second
+
 
                 // Calculate the new position
-                newX = vol.getAvion().getPosition().getX() + (directionX * distanceToMove);
-                newY = vol.getAvion().getPosition().getY() + (directionY * distanceToMove);
+                newX = vol.getAvion().getPosition().getX() + (directionX * distanceAvionArrivToMove);
+                newY = vol.getAvion().getPosition().getY() + (directionY * distanceAvionArrivToMove);
 
-            System.out.println("NEW X : " + newX);
-            System.out.println("NEW Y : " +newY);
+
 
             // Update avion's position
-            vol.getAvion().getPosition().setX(newX);
-            vol.getAvion().getPosition().setY(newY);
+            vol.getAvion().getPosition().setX((int)newX);
+            vol.getAvion().getPosition().setY((int)newY);
+
+            vol.getAvion().setSpeed(speed);
+            avionService.saveAvion(vol.getAvion());
+            System.out.println("distanceAvionArriv :" + distanceAvionArriv);
+            System.out.println("NEW X : " + newX);
+            System.out.println("NEW Y : " +newY);
+            System.out.println(" Distance par second : " + distanceAvionArrivToMove + "KM/S");
+            System.out.println("direc x : " + directionX);
+            System.out.println("direc y : " + directionY);
 
         }
         return speed;

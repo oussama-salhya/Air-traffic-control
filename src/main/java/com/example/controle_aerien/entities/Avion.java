@@ -26,6 +26,8 @@ public class Avion {
     private double capacite;
     private boolean disponibilite;
 
+    private int speed;
+
     @ManyToOne
     @JoinColumn(name ="aerport_id",referencedColumnName = "id")
     private Aeroport aeroport;

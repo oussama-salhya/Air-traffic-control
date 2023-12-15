@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="points",uniqueConstraints = @UniqueConstraint(columnNames = {"x","y"}))
+@Table(name="points")
 public class Point {
 
     @Id
