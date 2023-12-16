@@ -67,16 +67,26 @@ public class ControleAerienApplication {
         aeroportService.saveAeroport(aeroport8);
 
         Avion avion1 = new Avion("avion1");
+        Avion avion2 = new Avion("avion2");
+        Avion avion3 = new Avion("avion3");
 
-        avionService.saveAvion(avion1);
+        avion1 =avionService.saveAvion(avion1);
+        avion2 =avionService.saveAvion(avion2);
+        avion3 =avionService.saveAvion(avion3);
 
-        Avion avion = avionService.getALLAvions().get(0);
+        //Avion avion = avionService.getALLAvions().get(0);
 
-        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion.getId());
+        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion1.getId());
+        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
+        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
 
-        Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),false);
+        Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
+        Vol vol2 = volService.addVol(aeroport0.getId(),aeroport4.getId(),null);
+        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
 
         volService.StartVolGlobal(vol);
+        volService.StartVolGlobal(vol2);
+        volService.StartVolGlobal(vol3);
 
         /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
 

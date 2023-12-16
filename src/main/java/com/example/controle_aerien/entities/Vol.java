@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "vols")
@@ -35,7 +37,15 @@ public class Vol {
     @JoinColumn(name = "avion_id" , referencedColumnName = "id")
     private Avion avion;
 
-    private boolean isEscale;
+    /*@OneToMany(mappedBy = "vol", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trajet> trajets = new ArrayList<>();*/
+
+    @ManyToOne
+    @JoinColumn(name = "parent_vol_id")
+    private Vol parentVol;
+
+    @OneToMany(mappedBy = "parentVol", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vol> subVols = new ArrayList<>();
 
     public Vol(Aeroport aeroportDepart, Aeroport aeroportArrivee, Date heureDepart, Date heureArrivee, Avion avion) {
         this.aeroportDepart = aeroportDepart;
@@ -45,5 +55,8 @@ public class Vol {
         this.avion = avion;
         avion.setDisponibilite(true); // false dans l'affectation
     }
+
+
+
 
 }

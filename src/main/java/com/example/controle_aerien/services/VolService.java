@@ -6,7 +6,6 @@ import com.example.controle_aerien.dao.VolRepository;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.Vol;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,10 +48,16 @@ public class VolService {
 
     public Vol AddAvionToVol(Vol vol)
     {
-        Avion avion = vol.getAeroportDepart().getAvionsSol().get(0);
-        vol.setAvion(avion);
-        avion.setDisponibilite(false);
-        return (vol);
+        for(Avion avion : vol.getAeroportDepart().getAvionsSol())
+        {
+            if(avion.isDisponibilite())
+            {
+                vol.setAvion(avion);
+                avion.setDisponibilite(false);
+                return (vol);
+            }
+        }
+        return null;
     }
 
     public Vol AddAeroportToVol(Long idAeroDepart ,Long idAeroArrive,Vol vol)
@@ -71,46 +76,50 @@ public class VolService {
         return null;
     }
 
-    public Vol addVol(Long idAeroDepart ,Long idAeroArrive,boolean isEscale)
-    {
+    public Vol addVol(Long idAeroDepart, Long idAeroArrive, Vol parentVol) {
         Vol vol = new Vol();
-        vol = AddAeroportToVol(idAeroDepart,idAeroArrive,vol);
-        //temps depart affectation
+        vol = AddAeroportToVol(idAeroDepart, idAeroArrive, vol);
 
-        if(vol != null) {
+        if (vol != null) {
             vol = AddAvionToVol(vol);
-            vol.setEscale(isEscale);
+
+            if (parentVol != null) {
+                // If there is a parentVol, add the current vol as a subVol
+                parentVol.getSubVols().add(vol);
+                vol.setParentVol(parentVol);
+            }
+
             return volRepository.save(vol);
         }
+
         return null;
     }
 
-    public void StartVolGlobal(Vol volglobal)
-    {
+
+    public void StartVolGlobal(Vol volglobal) {
         Aeroport aeroportDepart = volglobal.getAeroportDepart();
         Aeroport aeroportArrivee = volglobal.getAeroportArrivee();
 
-        HashMap<String ,Integer> dji = djik.djisktraalgo(aeroportDepart.getId(),aeroportArrivee.getId());
+        HashMap<String, Integer> dji = djik.djisktraalgo(aeroportDepart.getId(), aeroportArrivee.getId());
 
-        Vol voltrajet ;
-        int i=0;
+        Vol voltrajet;
+        int i = 0;
         Integer nextValue;
+
         for (Map.Entry<String, Integer> entry : dji.entrySet()) {
-            if(entry.getKey().equals("T" + i)) {
-                    nextValue = dji.get("T" + (i+1));
+            if (entry.getKey().equals("T" + i)) {
+                nextValue = dji.get("T" + (i + 1));
+
                 if (nextValue != null) {
-                    voltrajet = addVol(Long.valueOf(entry.getValue()),Long.valueOf(nextValue),true);
+                    voltrajet = addVol(Long.valueOf(entry.getValue()), Long.valueOf(nextValue), volglobal);
                     i++;
                     StartVol(voltrajet);
-                    volRepository.delete(voltrajet);
-                }
-                else
-                {
+                } else {
                     return;
                 }
             }
         }
-
+        volglobal.getAvion().setDisponibilite(true);
     }
     public void StartVol(Vol vol)
     {

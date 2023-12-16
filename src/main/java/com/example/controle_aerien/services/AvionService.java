@@ -16,7 +16,7 @@ public class AvionService {
         return avionrepository.findById(idAvion).get();
     }
     //update and save avion
-    public void saveAvion(Avion avion){
+    public Avion saveAvion(Avion avion){
         if(avion.getType().equals("COURT"))
         {
             avion.setConsommation(4);
@@ -32,7 +32,7 @@ public class AvionService {
             avion.setConsommation(6);
             avion.setCapacite(80000);
         }
-        avionrepository.save(avion);
+        return avionrepository.save(avion);
     }
     public List<Avion> getALLAvions(){
         return avionrepository.findAll();
