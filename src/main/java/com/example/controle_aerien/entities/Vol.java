@@ -35,6 +35,8 @@ public class Vol {
     @JoinColumn(name = "avion_id" , referencedColumnName = "id")
     private Avion avion;
 
+    private boolean isEscale;
+
     public Vol(Aeroport aeroportDepart, Aeroport aeroportArrivee, Date heureDepart, Date heureArrivee, Avion avion) {
         this.aeroportDepart = aeroportDepart;
         this.aeroportArrivee = aeroportArrivee;

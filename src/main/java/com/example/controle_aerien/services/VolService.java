@@ -6,12 +6,14 @@ import com.example.controle_aerien.dao.VolRepository;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.Vol;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -69,7 +71,7 @@ public class VolService {
         return null;
     }
 
-    public Vol addVol(Long idAeroDepart ,Long idAeroArrive)
+    public Vol addVol(Long idAeroDepart ,Long idAeroArrive,boolean isEscale)
     {
         Vol vol = new Vol();
         vol = AddAeroportToVol(idAeroDepart,idAeroArrive,vol);
@@ -77,13 +79,41 @@ public class VolService {
 
         if(vol != null) {
             vol = AddAvionToVol(vol);
+            vol.setEscale(isEscale);
             return volRepository.save(vol);
         }
         return null;
     }
-    public void StartVol(Long id)
+
+    public void StartVolGlobal(Vol volglobal)
     {
-        Vol vol = volRepository.findById(id).get();
+        Aeroport aeroportDepart = volglobal.getAeroportDepart();
+        Aeroport aeroportArrivee = volglobal.getAeroportArrivee();
+
+        HashMap<String ,Integer> dji = djik.djisktraalgo(aeroportDepart.getId(),aeroportArrivee.getId());
+
+        Vol voltrajet ;
+        int i=0;
+        Integer nextValue;
+        for (Map.Entry<String, Integer> entry : dji.entrySet()) {
+            if(entry.getKey().equals("T" + i)) {
+                    nextValue = dji.get("T" + (i+1));
+                if (nextValue != null) {
+                    voltrajet = addVol(Long.valueOf(entry.getValue()),Long.valueOf(nextValue),true);
+                    i++;
+                    StartVol(voltrajet);
+                    volRepository.delete(voltrajet);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+    }
+    public void StartVol(Vol vol)
+    {
 
 
         HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
@@ -120,10 +150,10 @@ public class VolService {
                     aeroportService.removeAvionFromAvionsVol(vol.getAeroportArrivee().getId(),vol.getAvion());
                     vol.getAeroportArrivee().getAvionsSol().add(vol.getAvion());
                     aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    System.out.println("DESTINATION ARRIVED");
                     return;
                 }
             }
-            System.out.println("ARRIVED");
 
         }
     }
@@ -148,11 +178,6 @@ public class VolService {
             double distanceAvionArriv = Math.sqrt(deltaXA * deltaXA + deltaYA * deltaYA);
             double distanceAvionDepart = Math.sqrt(deltaXD * deltaXD + deltaYD * deltaYD);
 
-            /*if(distanceAvionArriv < 10)
-            {
-                 newX = vol.getAeroportArrivee().getPosition().getX();
-                 newY = vol.getAeroportArrivee().getPosition().getY();
-            }*/
             if(distanceAvionArriv < 50)//ATTERISSAGE
             {
                 if(vol.getAeroportDepart().getAvionsVol().contains(vol.getAvion()))
@@ -212,12 +237,20 @@ public class VolService {
 
 
             // Calculate the new position
-            newX = vol.getAvion().getPosition().getX() + (directionX * distanceAvionArrivToMove);
-            newY = vol.getAvion().getPosition().getY() + (directionY * distanceAvionArrivToMove);
+            if(distanceAvionArriv < distanceAvionArrivToMove)
+            {
+                newX = vol.getAeroportArrivee().getPosition().getX();
+                newY = vol.getAeroportArrivee().getPosition().getY();
+            }
+            else {
+                newX = vol.getAvion().getPosition().getX() + (directionX * distanceAvionArrivToMove);
+                newY = vol.getAvion().getPosition().getY() + (directionY * distanceAvionArrivToMove);
+            }
 
 
 
             // Update avion's position
+
             vol.getAvion().getPosition().setX((int)newX);
             vol.getAvion().getPosition().setY((int)newY);
 

@@ -36,9 +36,9 @@ public class ControleAerienApplication {
 
     @Autowired
     private VolService volService;
-
     @Autowired
-    DjikstraImpl djik ;
+    private DjikstraImpl djik;
+
 
     public static void main(String[] args) {
         SpringApplication.run(ControleAerienApplication.class, args);
@@ -74,9 +74,21 @@ public class ControleAerienApplication {
 
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion.getId());
 
-        Vol vol = volService.addVol(aeroport0.getId(),aeroport4.getId());
+        Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),false);
 
-        volService.StartVol(vol.getId());
+        volService.StartVolGlobal(vol);
+
+        /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
+
+        for (Map.Entry<String, Integer> entry : dji.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }*/
+
+        /*volService.StartVol(vol.getId());
+
+        Vol vol2 = volService.addVol(aeroport4.getId(),aeroport0.getId());
+
+        volService.StartVol(vol2.getId());*/
         /*
         List<DistanceAeroport> distanceAeroportList = distanceAeroportService.getAllDistanceAeroport();
 
@@ -84,12 +96,7 @@ public class ControleAerienApplication {
         {
             System.out.println(ds.getDistance());
         }
-
-        HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
-
-        for (Map.Entry<String, Integer> entry : dji.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }*/
+*/
     }
 }
 
