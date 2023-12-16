@@ -69,24 +69,44 @@ public class ControleAerienApplication {
         Avion avion1 = new Avion("avion1");
         Avion avion2 = new Avion("avion2");
         Avion avion3 = new Avion("avion3");
+        System.out.println("D3 : " + avion1.isDisponibilite());
 
         avion1 =avionService.saveAvion(avion1);
         avion2 =avionService.saveAvion(avion2);
         avion3 =avionService.saveAvion(avion3);
+        for(Avion avion : avionService.getALLAvions())
+        {
+            System.out.println("avion d: " + avion.isDisponibilite() );
+        }
+        System.out.println("D2 : " + avion1.isDisponibilite());
 
         //Avion avion = avionService.getALLAvions().get(0);
 
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion1.getId());
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
-        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
+        for(Avion avion : avionService.getALLAvions())
+        {
+            System.out.println("avion d: " + avion.isDisponibilite() );
+        }
+        System.out.println("D1 : " + avion1.isDisponibilite());
+        //aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
 
         Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
         Vol vol2 = volService.addVol(aeroport0.getId(),aeroport4.getId(),null);
-        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
+        //Vol vol3 = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
+        for(Avion avion : avionService.getALLAvions())
+        {
+            System.out.println("avion d: " + avion.isDisponibilite() );
+        }
+        System.out.println("D4 : " + avion1.isDisponibilite());
 
+        for(Avion avion : avionService.getALLAvions())
+        {
+            System.out.println("avion d: " + avion.isDisponibilite() );
+        }
         volService.StartVolGlobal(vol);
         volService.StartVolGlobal(vol2);
-        volService.StartVolGlobal(vol3);
+       // volService.StartVolGlobal(vol3);
 
         /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
 

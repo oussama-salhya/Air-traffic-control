@@ -50,11 +50,16 @@ public class VolService {
     {
         for(Avion avion : vol.getAeroportDepart().getAvionsSol())
         {
+            System.out.println("MAMAAMAMAMAAMA");
+            System.out.println("AVION id =" + avion.getId() + "Avion disponibilite =" + avion.isDisponibilite());
+
             if(avion.isDisponibilite())
             {
                 vol.setAvion(avion);
                 avion.setDisponibilite(false);
-                return (vol);
+                avion = avionService.saveAvion(avion);
+                System.out.println("AVION id =" + avion.getId());
+                return (volRepository.save(vol));
             }
         }
         return null;
@@ -81,12 +86,18 @@ public class VolService {
         vol = AddAeroportToVol(idAeroDepart, idAeroArrive, vol);
 
         if (vol != null) {
-            vol = AddAvionToVol(vol);
 
             if (parentVol != null) {
                 // If there is a parentVol, add the current vol as a subVol
+                //VOL ESCALE
+                vol.setAvion(parentVol.getAvion());
                 parentVol.getSubVols().add(vol);
                 vol.setParentVol(parentVol);
+                volRepository.save(parentVol);
+            }
+            else {
+                //VOL GLOBAL
+                vol = AddAvionToVol(vol);
             }
 
             return volRepository.save(vol);
@@ -189,6 +200,11 @@ public class VolService {
 
             if(distanceAvionArriv < 50)//ATTERISSAGE
             {
+                System.out.println("AVION ID : " + vol.getAvion().getId());
+                for(Avion avion : vol.getAeroportDepart().getAvionsVol())
+                {
+                    System.out.println("AVION IDD : " + avion.getId());
+                }
                 if(vol.getAeroportDepart().getAvionsVol().contains(vol.getAvion()))
                 {
                     System.out.println("ATTERISSAGE--------------------------");
