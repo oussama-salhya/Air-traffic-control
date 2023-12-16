@@ -88,4 +88,21 @@ public class AeroportService {
         return aeroportRepo.save(aeroport);
     }
 
+    public Aeroport removeAvionFromAeroport(Long idAero, Long idAvion) {
+        Aeroport aeroport = aeroportRepo.findById(idAero).orElse(null);
+        Avion avion = avionService.getAvionById(idAvion);
+
+        if (aeroport != null && avion != null && aeroport.getAvionsSol().contains(avion)) {
+            avion.setAeroport(null);
+            System.out.println("CONTAINSS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            avionService.saveAvion(avion);
+
+            aeroport.getAvionsSol().remove(avion);
+            aeroport.getAvionsVol().remove(avion);
+            aeroport = aeroportRepo.save(aeroport);
+        }
+
+        return aeroport;
+    }
+
 }

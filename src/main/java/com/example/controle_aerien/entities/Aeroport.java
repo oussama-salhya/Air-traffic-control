@@ -38,10 +38,10 @@ public class Aeroport {
 
     private double secteur;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Avion> avionsSol;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Avion> avionsVol;
 
     private boolean disponibilite;

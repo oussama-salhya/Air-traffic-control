@@ -116,7 +116,7 @@ public class VolService {
                 {
                     vol.getAeroportArrivee().getAvionsVol().remove(vol.getAvion());
                     vol.getAeroportArrivee().getAvionsSol().add(vol.getAvion());
-                    aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    System.out.println("DESTIONATION ARRIVED !!!!! ");
                 }
             }
 
@@ -148,48 +148,57 @@ public class VolService {
                  newX = vol.getAeroportArrivee().getPosition().getX();
                  newY = vol.getAeroportArrivee().getPosition().getY();
             }*/
-            if(distanceAvionArriv < 50)//ATTERISSAGE
-            {
-                if(vol.getAeroportDepart().getAvionsVol().contains(vol.getAvion()))
-                {
-                    System.out.println("ATTERISSAGE--------------------------");
-                    for(Avion avion : vol.getAeroportDepart().getAvionsVol())
+
+                if (distanceAvionArriv < 50) {
+                    // ATTERISSAGE
+                    if (vol.getAeroportDepart().getAvionsVol().contains(vol.getAvion()))
                     {
-                        System.out.println("AvionDV : " + avion.getId());
+                        System.out.println("ATTERISSAGE--------------------------");
+                        // Your existing code...
+
+                        // Remove avion from the current aeroport
+                        vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
+                        aeroportService.saveAeroport(vol.getAeroportDepart());
+
+                        // Set avion's new aeroport
+                        vol.getAvion().setAeroport(vol.getAeroportArrivee());
+                        avionService.saveAvion(vol.getAvion());
+
+                        // Add avion to the new aeroport
+                        vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
+                        aeroportService.saveAeroport(vol.getAeroportArrivee());
                     }
-                    for(Avion avion : vol.getAeroportArrivee().getAvionsVol())
-                    {
-                        System.out.println("AvionAV : " + avion.getId());
-                    }
-                    vol.getAvion().setAeroport(vol.getAeroportArrivee());
-                    vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
+                    // Update speed
+                    speed = speed - 20;
+                    System.out.println(speed);
+                }
+            if (distanceAvionDepart < 50) {// DECOLAGE
+                if (vol.getAeroportDepart().getAvionsSol().contains(vol.getAvion())) {
+                    System.out.println("DECOLAGE--------------------------");
+
+                    // Remove avion from the departure aeroport's ground
+                    vol.getAeroportDepart().getAvionsSol().remove(vol.getAvion());
+
+                    // Save changes to the departure aeroport
                     aeroportService.saveAeroport(vol.getAeroportDepart());
-                    vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
+
+                    // Add avion to the departure aeroport's airborne list
+                    vol.getAeroportDepart().getAvionsVol().add(vol.getAvion());
+
+                    // Set the new aeroport for the avion
+                    vol.getAvion().setAeroport(vol.getAeroportArrivee());
+
+                    // Save changes to the avion
                     avionService.saveAvion(vol.getAvion());
 
-                    //aeroportService.saveAeroport(vol.getAeroportArrivee());
-                }
-                speed=speed-20;
-                System.out.println(speed);
-            }
-            if(distanceAvionDepart < 50)//DECOLAGE
-            {
-                if(vol.getAeroportDepart().getAvionsSol().contains(vol.getAvion()))
-                {
-                    System.out.println("DECOLAGE--------------------------");
-                    for(Avion avion : vol.getAeroportDepart().getAvionsSol())
-                    {
-                        System.out.println("AvionDS : " + avion.getId());
-                    }
-                    for(Avion avion : vol.getAeroportDepart().getAvionsVol())
-                    {
-                        System.out.println("AvionDV : " + avion.getId());
-                    }
-                    vol.getAeroportDepart().getAvionsSol().remove(vol.getAvion());
-                    vol.getAeroportDepart().getAvionsVol().add(vol.getAvion());
+                    // Save changes to the departure aeroport (again, in case the cascade type is not set properly)
                     aeroportService.saveAeroport(vol.getAeroportDepart());
+
+                    System.out.println("SIZE avionsVol: " + vol.getAeroportDepart().getAvionsVol().size());
+                    System.out.println("SIZE avionsSol: " + vol.getAeroportDepart().getAvionsSol().size());
                 }
-                speed=speed+20;
+
+                speed = speed + 20;
                 System.out.println(speed);
             }
 
