@@ -74,6 +74,8 @@ public class ControleAerienApplication {
         avion1 =avionService.saveAvion(avion1);
         avion2 =avionService.saveAvion(avion2);
         avion3 =avionService.saveAvion(avion3);
+
+
         for(Avion avion : avionService.getALLAvions())
         {
             System.out.println("avion d: " + avion.isDisponibilite() );
@@ -84,16 +86,20 @@ public class ControleAerienApplication {
 
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion1.getId());
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
+        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
+
+
         for(Avion avion : avionService.getALLAvions())
         {
             System.out.println("avion d: " + avion.isDisponibilite() );
         }
         System.out.println("D1 : " + avion1.isDisponibilite());
-        //aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
 
         Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
         Vol vol2 = volService.addVol(aeroport0.getId(),aeroport4.getId(),null);
-        //Vol vol3 = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
+        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport1.getId(),null);
+
+
         for(Avion avion : avionService.getALLAvions())
         {
             System.out.println("avion d: " + avion.isDisponibilite() );
@@ -106,7 +112,7 @@ public class ControleAerienApplication {
         }
         volService.StartVolGlobal(vol);
         volService.StartVolGlobal(vol2);
-       // volService.StartVolGlobal(vol3);
+        volService.StartVolGlobal(vol3);
 
         /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
 

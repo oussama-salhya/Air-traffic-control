@@ -217,11 +217,12 @@ public class VolService {
                         System.out.println("AvionAV : " + avion.getId());
                     }
                     vol.getAvion().setAeroport(vol.getAeroportArrivee());
+                    avionService.saveAvion(vol.getAvion());
                     System.out.println("1--------------------------");
                     vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
                     aeroportService.removeAvionFromAvionsVol(vol.getAeroportDepart().getId(),vol.getAvion());
                     System.out.println("2--------------------------");
-                    aeroportService.saveAeroport(vol.getAeroportDepart());
+                    aeroportRepository.save(    vol.getAeroportDepart());
                     System.out.println("3--------------------------");
                     vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
                     System.out.println("4--------------------------");
