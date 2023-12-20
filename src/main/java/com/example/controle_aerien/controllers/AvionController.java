@@ -1,5 +1,6 @@
 package com.example.controle_aerien.controllers;
 
+import com.example.controle_aerien.DTO.AvionDTO;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.services.AvionService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class AvionController {
     @Autowired
     AvionService avionservice;
@@ -18,11 +20,13 @@ public class AvionController {
         return avionservice.getALLAvions();
     }
     @GetMapping("/avion/{id}")
-    public ResponseEntity<Avion> getAviontById(@PathVariable Long id)
+    public ResponseEntity<AvionDTO> getAviontById(@PathVariable Long id)
     {
         Avion avion = avionservice.getAvionById(id);
-        if(avion!=null)
-            return ResponseEntity.ok(avion);//200 OK
+        if(avion!=null) {
+            AvionDTO avionDTO = new AvionDTO(avion);
+            return ResponseEntity.ok(avionDTO);//200 OK
+        }
         else
             return ResponseEntity.notFound().build();//404 NOT FOUND
     }
