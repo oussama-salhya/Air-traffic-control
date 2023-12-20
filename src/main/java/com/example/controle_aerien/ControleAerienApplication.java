@@ -14,6 +14,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.BufferedReader;
@@ -110,8 +111,8 @@ public class ControleAerienApplication {
         {
             System.out.println("avion d: " + avion.isDisponibilite() );
         }
-        /*volService.StartVolGlobal(vol);
-        volService.StartVolGlobal(vol2);
+        volService.StartVolGlobal(vol);
+        /*volService.StartVolGlobal(vol2);
         volService.StartVolGlobal(vol3);*/
 
         /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());

@@ -8,6 +8,7 @@ import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.Vol;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -107,6 +108,7 @@ public class VolService {
     }
 
 
+    @Async
     public void StartVolGlobal(Vol volglobal) {
         Aeroport aeroportDepart = volglobal.getAeroportDepart();
         Aeroport aeroportArrivee = volglobal.getAeroportArrivee();
