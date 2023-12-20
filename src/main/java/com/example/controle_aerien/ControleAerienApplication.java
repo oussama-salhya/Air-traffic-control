@@ -110,9 +110,9 @@ public class ControleAerienApplication {
         {
             System.out.println("avion d: " + avion.isDisponibilite() );
         }
-        volService.StartVolGlobal(vol);
+        /*volService.StartVolGlobal(vol);
         volService.StartVolGlobal(vol2);
-        volService.StartVolGlobal(vol3);
+        volService.StartVolGlobal(vol3);*/
 
         /*HashMap<String ,Integer> dji = djik.djisktraalgo(vol.getAeroportDepart().getId(),vol.getAeroportArrivee().getId());
 

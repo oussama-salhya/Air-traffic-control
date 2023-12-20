@@ -1,5 +1,6 @@
 package com.example.controle_aerien.entities;
 
+import com.example.controle_aerien.DTO.VolDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,8 +38,6 @@ public class Vol {
     @JoinColumn(name = "avion_id" , referencedColumnName = "id")
     private Avion avion;
 
-    /*@OneToMany(mappedBy = "vol", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Trajet> trajets = new ArrayList<>();*/
 
     @ManyToOne
     @JoinColumn(name = "parent_vol_id")
@@ -53,9 +52,13 @@ public class Vol {
         this.heureDepart = heureDepart;
         this.heureArrivee = heureArrivee;
         this.avion = avion;
-        avion.setDisponibilite(true); // false dans l'affectation
+        avion.setDisponibilite(true);
     }
 
+
+    public VolDTO toDTO() {
+        return new VolDTO(this);
+    }
 
 
 

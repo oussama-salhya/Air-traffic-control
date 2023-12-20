@@ -16,7 +16,6 @@ import java.util.List;
 
 
 @RestController
-//@RequestMapping("/aeroports")
 public class AeroportController {
 
     @Autowired

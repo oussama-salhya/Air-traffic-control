@@ -1,5 +1,6 @@
 package com.example.controle_aerien.controllers;
 
+import com.example.controle_aerien.DTO.VolDTO;
 import com.example.controle_aerien.entities.Vol;
 import com.example.controle_aerien.services.VolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
+@CrossOrigin
 public class VolController {
 
     @Autowired
@@ -23,11 +24,13 @@ public class VolController {
     }
 
     @GetMapping("/vols/{id}")
-    public ResponseEntity<Vol> getVolById(@PathVariable Long id)
+    public ResponseEntity<VolDTO> getVolById(@PathVariable Long id)
     {
         Vol vol = volService.getVolById(id);
-        if(vol!=null)
-            return ResponseEntity.ok(vol);//200 OK
+        if(vol!=null) {
+            VolDTO volDTO = vol.toDTO();
+            return ResponseEntity.ok(volDTO);//200 OK
+        }
         else
             return ResponseEntity.notFound().build();//404 NOT FOUND
     }
