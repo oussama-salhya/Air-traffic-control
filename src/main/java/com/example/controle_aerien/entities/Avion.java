@@ -32,6 +32,8 @@ public class Avion {
     @JoinColumn(name ="aerport_id",referencedColumnName = "id")
     private Aeroport aeroport;
 
+
+
     @OneToOne(cascade = CascadeType.ALL)
     private Point position;
 
