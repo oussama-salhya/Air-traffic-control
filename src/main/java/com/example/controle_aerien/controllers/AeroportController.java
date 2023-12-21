@@ -1,5 +1,6 @@
 package com.example.controle_aerien.controllers;
 
+import com.example.controle_aerien.DTO.AeroportDTO;
 import com.example.controle_aerien.entities.Aeroport;
 import com.example.controle_aerien.entities.DistanceAeroport;
 import com.example.controle_aerien.services.AeroportService;
@@ -28,12 +29,13 @@ public class AeroportController {
     public List<Aeroport> getAllAeroport() {
         return aeroportService.getAllAeroport();
     }
-
     @GetMapping("/aeroports/{id}")
-    public ResponseEntity<Aeroport> getAeroportById(@PathVariable Long id) {
+    public ResponseEntity<AeroportDTO> getAeroportById(@PathVariable Long id) {
         Aeroport aeroport = aeroportService.getAeroportById(id);
-        if (aeroport != null)
-            return ResponseEntity.ok(aeroport);//200 OK
+        if (aeroport != null) {
+            AeroportDTO aeroportDTO = new AeroportDTO(aeroport);
+            return ResponseEntity.ok(aeroportDTO);//200 OK
+        }
         else
             return ResponseEntity.notFound().build();//404 NOT FOUND
     }

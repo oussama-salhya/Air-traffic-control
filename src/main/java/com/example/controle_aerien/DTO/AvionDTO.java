@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +21,7 @@ public class AvionDTO {
     private double capacite;
     private boolean disponibilite;
     private int speed;
-    private Long idAeroport;
+    private Long IdAeroport;
     private Point Position;
 
     // Constructors
@@ -31,9 +34,11 @@ public class AvionDTO {
         this.disponibilite = avion.isDisponibilite();
         this.speed = avion.getSpeed();
         this.Position = avion.getPosition();
-
-        if (avion.getAeroport() != null) {
-            this.idAeroport = avion.getAeroport().getId();
-        }
+        this.IdAeroport=avion.getAeroport().getId();
+    }
+    public static List<AvionDTO> convertToDTOList(List<Avion> avions) {
+        return avions.stream()
+                .map(AvionDTO::new)
+                .collect(Collectors.toList());
     }
 }

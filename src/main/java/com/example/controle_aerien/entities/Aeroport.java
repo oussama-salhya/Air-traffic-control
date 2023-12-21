@@ -31,15 +31,12 @@ public class Aeroport {
     private double durreboucleatt;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     private Point position;
 
     @OneToMany(mappedBy = "distanceAeroportId.aeroport1")
-    @JsonIgnore
     private List<DistanceAeroport> distancesFromHere;
 
     @OneToMany(mappedBy = "distanceAeroportId.aeroport2")
-    @JsonIgnore
     private List<DistanceAeroport> distancesToHere;
 
     private double secteur;
@@ -48,7 +45,6 @@ public class Aeroport {
     private List<Avion> avionsSol;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    @JsonIgnore
     private List<Avion> avionsVol;
 
     private boolean disponibilite;
