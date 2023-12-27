@@ -90,7 +90,6 @@ public class ControleAerienApplication {
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion1.getId());
 //        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
 //        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
-//  test
 
         for(Avion avion : avionService.getALLAvions())
         {
