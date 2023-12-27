@@ -47,7 +47,8 @@ public class ControleAerienApplication {
 
     @PostConstruct
     public void init() throws AeroportNotfound, IOException {
-        Aeroport aeroport0 = new Aeroport(1, new Point(579, 352));
+//        Aeroport aeroport0 = new Aeroport(1, new Point(579, 352));
+        Aeroport aeroport0 = new Aeroport(1, new Point(31.25, -8));
         Aeroport aeroport1 = new Aeroport(2, new Point(579, 382));
         Aeroport aeroport2 = new Aeroport(3, new Point(390, 466));
         Aeroport aeroport3 = new Aeroport(4, new Point(351, 370));
@@ -55,7 +56,8 @@ public class ControleAerienApplication {
         Aeroport aeroport5 = new Aeroport(6, new Point(960, 517));
         Aeroport aeroport6 = new Aeroport(7, new Point(998, 357));
         Aeroport aeroport7 = new Aeroport(8, new Point(329, 270));
-        Aeroport aeroport8 = new Aeroport(9, new Point(677, 559));
+//        Aeroport aeroport8 = new Aeroport(9, new Point(677, 559));
+        Aeroport aeroport8 = new Aeroport(9, new Point(38.73, -102.38));
 
         aeroportService.saveAeroport(aeroport0);
         aeroportService.saveAeroport(aeroport1);
@@ -86,8 +88,8 @@ public class ControleAerienApplication {
         //Avion avion = avionService.getALLAvions().get(0);
 
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion1.getId());
-        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
-        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
+//        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion2.getId());
+//        aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
 
 
         for(Avion avion : avionService.getALLAvions())
@@ -97,8 +99,9 @@ public class ControleAerienApplication {
         System.out.println("D1 : " + avion1.isDisponibilite());
 
         Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
-        Vol vol2 = volService.addVol(aeroport0.getId(),aeroport4.getId(),null);
-        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport1.getId(),null);
+        Vol vol1 = volService.addVol(aeroport8.getId(),aeroport0.getId(),null);
+//        Vol vol2 = volService.addVol(aeroport0.getId(),aeroport4.getId(),null);
+//        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport1.getId(),null);
 
 
         for(Avion avion : avionService.getALLAvions())
@@ -112,6 +115,7 @@ public class ControleAerienApplication {
             System.out.println("avion d: " + avion.isDisponibilite() );
         }
         volService.StartVolGlobal(vol);
+        volService.StartVolGlobal(vol1);
         /*volService.StartVolGlobal(vol2);
         volService.StartVolGlobal(vol3);*/
 
