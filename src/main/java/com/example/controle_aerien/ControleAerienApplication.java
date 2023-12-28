@@ -58,7 +58,7 @@ public class ControleAerienApplication {
         Aeroport aeroport7 = new Aeroport(8, new Point(329, 270));
 //        Aeroport aeroport8 = new Aeroport(9, new Point(677, 559));
         Aeroport aeroport8 = new Aeroport(9, new Point(38.73, -102.38));
-
+// test
         aeroportService.saveAeroport(aeroport0);
         aeroportService.saveAeroport(aeroport1);
         aeroportService.saveAeroport(aeroport2);
