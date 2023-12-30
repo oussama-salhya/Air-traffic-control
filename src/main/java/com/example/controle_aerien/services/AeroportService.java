@@ -36,10 +36,14 @@ public class AeroportService {
         }
     }
     void removeAvionFromAvionsVol(long aeroportId, Avion avion) {
-        aeroportRepo.removeAvionFromAvionsVol(aeroportId, avion);
+        synchronized (this) {
+            aeroportRepo.removeAvionFromAvionsVol(aeroportId, avion);
+        }
     }
     void removeAvionFromAvionsSol(long aeroportId, Avion avion) {
-        aeroportRepo.removeAvionFromAvionsSol(aeroportId, avion);
+        synchronized (this) {
+            aeroportRepo.removeAvionFromAvionsSol(aeroportId, avion);
+        }
     }
     public Aeroport getAeroportById(Long id)
     {
