@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,7 @@ public class VolService {
     private AvionService avionService;
     @Autowired
     private AeroportRepository aeroportRepository;
+    private static final Object lockObject = new Object();
 
     public void saveVol(Vol vol)
     {
@@ -171,7 +175,7 @@ public class VolService {
                     vol.getAeroportArrivee().getAvionsVol().remove(vol.getAvion());
                     aeroportService.removeAvionFromAvionsVol(vol.getAeroportArrivee().getId(),vol.getAvion());
                     vol.getAeroportArrivee().getAvionsSol().add(vol.getAvion());
-                    aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    aeroportRepository.save(vol.getAeroportArrivee());
                     System.out.println("DESTINATION ARRIVED");
                     return;
                 }
@@ -224,36 +228,44 @@ public class VolService {
                     vol.getAeroportDepart().getAvionsVol().remove(vol.getAvion());
                     aeroportService.removeAvionFromAvionsVol(vol.getAeroportDepart().getId(),vol.getAvion());
                     System.out.println("2--------------------------");
-                    aeroportRepository.save(    vol.getAeroportDepart());
+                    aeroportRepository.save(vol.getAeroportDepart());
                     System.out.println("3--------------------------");
                     vol.getAeroportArrivee().getAvionsVol().add(vol.getAvion());
                     System.out.println("4--------------------------");
-                    aeroportService.saveAeroport(vol.getAeroportArrivee());
+                    aeroportRepository.save(vol.getAeroportArrivee());
                     System.out.println("5--------------------------");
                 }
                 speed=speed-20;
                 System.out.println(speed);
             }
-            if(distanceAvionDepart < 50)//DECOLAGE
-            {
-                if(vol.getAeroportDepart().getAvionsSol().contains(vol.getAvion()))
-                {
-                    System.out.println("DECOLAGE--------------------------");
-                    for(Avion avion : vol.getAeroportDepart().getAvionsSol())
-                    {
-                        System.out.println("AvionDS : " + avion.getId());
+            if (distanceAvionDepart < 50) {
+
+                synchronized (lockObject) {
+                    if (vol.getAeroportDepart().getAvionsSol().contains(vol.getAvion())) {
+                        System.out.println("DECOLAGE--------------------------");
+
+                        for (Avion avion : vol.getAeroportDepart().getAvionsSol()) {
+                            System.out.println("AvionDS : " + avion.getId());
+                        }
+
+                        for (Avion avion : vol.getAeroportDepart().getAvionsVol()) {
+                            System.out.println("AvionDV : " + avion.getId());
+                        }
+                        Vol newvol = volRepository.findById(vol.getId()).get();
+                        newvol.getAeroportDepart().getAvionsSol().remove(newvol.getAvion());
+                        aeroportService.removeAvionFromAvionsSol(newvol.getAeroportDepart().getId(), newvol.getAvion());
+                        //update vol by the newvol
+                        aeroportRepository.save(vol.getAeroportDepart());
+
+                        newvol.getAeroportDepart().getAvionsVol().add(newvol.getAvion());
+                        aeroportRepository.save(vol.getAeroportDepart());
                     }
-                    for(Avion avion : vol.getAeroportDepart().getAvionsVol())
-                    {
-                        System.out.println("AvionDV : " + avion.getId());
-                    }
-                    vol.getAeroportDepart().getAvionsSol().remove(vol.getAvion());
-                    vol.getAeroportDepart().getAvionsVol().add(vol.getAvion());
-                    aeroportService.saveAeroport(vol.getAeroportDepart());
                 }
-                speed=speed+20;
-                System.out.println(speed);
-            }
+
+                speed = speed + 20;
+                    System.out.println(speed);
+                }
+
 
             double directionX = deltaXA / distanceAvionArriv;
             double directionY = deltaYA / distanceAvionArriv;
