@@ -9,6 +9,7 @@ import com.example.controle_aerien.entities.Vol;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 //@Transactional
+@EnableScheduling
+
 public class VolService {
     @Autowired
     private VolRepository volRepository;
@@ -133,12 +136,11 @@ public class VolService {
                     voltrajet = addVol(Long.valueOf(entry.getValue()), Long.valueOf(nextValue), volglobal);
                     i++;
                     StartVol(voltrajet);
-                } else {
-                    return;
                 }
             }
         }
         volglobal.getAvion().setDisponibilite(true);
+        volglobal.setArrived(true);
         avionService.saveAvion(volglobal.getAvion());
     }
     public void StartVol(Vol vol)
@@ -180,6 +182,7 @@ public class VolService {
                             aeroportService.removeAvionFromAvionsVol(newvol.getAeroportArrivee().getId(),newvol.getAvion());
                             aeroportRepository.save(newvol.getAeroportArrivee());
                             newvol.getAeroportArrivee().getAvionsSol().add(newvol.getAvion());
+                            newvol.setArrived(true);
                             aeroportRepository.save(newvol.getAeroportArrivee());
                         return;
                         }
@@ -321,5 +324,11 @@ public class VolService {
         return aeroportArrivee != null && (int) currentX == (int) aeroportArrivee.getPosition().getX() && (int) currentY == (int) aeroportArrivee.getPosition().getY();
     }
 
-
+//    public void startSimulation() {
+//
+//    }
+//    @Async
+//    public void asyncStartVolGlobal(Vol vol) {
+//        StartVolGlobal(vol);
+//    }
 }

@@ -56,6 +56,14 @@ public class Aeroport {
         this.disponibilite=true;
         this.nbPlaceSol=5;
     }
+    public Aeroport(String nom, Point position){
+        this.nom = nom;
+        this.position = position;
+        this.disponibilite=true;
+        this.nbPlaceSol=5;
+//        this.idtest=idtest;
+//        this.idtest=(int)this.getId();
+    }
 
 
 }
