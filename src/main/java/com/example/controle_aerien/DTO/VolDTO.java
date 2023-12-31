@@ -14,12 +14,14 @@ public class VolDTO {
     private Long aeroportDepartId;
     private Long aeroportArriveeId;
     private VolDTO parentVol;
+    private AvionDTO avion;
 
 
     public VolDTO(Vol vol) {
         this.id = vol.getId();
         this.aeroportDepartId = vol.getAeroportDepart().getId();
         this.aeroportArriveeId = vol.getAeroportArrivee().getId();
+        this.avion = new AvionDTO(vol.getAvion());
 
         // Convert the parentVol to VolDTO recursively
         if (vol.getParentVol() != null) {

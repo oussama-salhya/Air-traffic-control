@@ -23,6 +23,23 @@ public class VolController {
         return volService.getAllVol();
     }
 
+    @GetMapping("/startVolGlobal/{id}")
+    public ResponseEntity<VolDTO> startVolGlobal(@PathVariable Long id)
+    {   Vol vol = volService.getVolById(id);
+        if(vol!=null) {
+            volService.StartVolGlobal(vol);
+            VolDTO volDTO = vol.toDTO();
+            return ResponseEntity.ok(volDTO);//200 OK
+        }
+        else
+            return ResponseEntity.notFound().build();//404 NOT FOUND
+    }
+//    @GetMapping("/startVolGlobalGloabal")
+//    public void startVolGlobalGlobal()
+//    {   Vol vol = volService.getVolById();
+//        volService.StartVolGlobal(vol);
+//    }
+
     @GetMapping("/vols/{id}")
     public ResponseEntity<VolDTO> getVolById(@PathVariable Long id)
     {
