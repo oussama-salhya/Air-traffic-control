@@ -73,7 +73,7 @@ public class AeroportService {
             {
                 if(aeroport.getId() != newaeroport.getId()) {
                     int distance = (int) Math.round(Math.sqrt(Math.pow(newaeroport.getPosition().getX() - aeroport.getPosition().getX(), 2) + Math.pow(newaeroport.getPosition().getY() - aeroport.getPosition().getY(), 2)));
-                    if(distance <=1000) {
+                    if(distance <=400) {
                         DistanceAeroportId distanceAeroportId = new DistanceAeroportId(newaeroport, aeroport);
 
                         DistanceAeroport distanceAeroport = new DistanceAeroport(distanceAeroportId, distance);

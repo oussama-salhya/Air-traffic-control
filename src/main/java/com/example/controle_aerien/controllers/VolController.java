@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,12 +23,28 @@ public class VolController {
     {
         return volService.getAllVol();
     }
+    @GetMapping("/volsEscale/{id}")
+    public List<Vol> getAllVollEscale(@PathVariable Long id)
+    {
+        List<Vol> vols = volService.getAllVol();
+        List <Vol> volsEscale = new ArrayList<>();
+        for (Vol vol : vols) {
+            if (vol.getParentVol() != null){
+            if(vol.getParentVol().getId()==id)
+            {
+                volsEscale.add(vol);
+            }
+
+            }
+        }
+        return volsEscale;
+    }
 
 //    @GetMapping("/startVolGlobal/{id}")
 //    public ResponseEntity<VolDTO> startVolGlobal(@PathVariable Long id)
 //    {   Vol vol = volService.getVolById(id);
 //        if(vol!=null) {
-//            volService.Asyn(vol);
+//            volService.StartVolGlobal(vol);
 //            VolDTO volDTO = vol.toDTO();
 //            return ResponseEntity.ok(volDTO);//200 OK
 //        }
@@ -35,13 +52,14 @@ public class VolController {
 //            return ResponseEntity.notFound().build();//404 NOT FOUND
 //    }
     @GetMapping("/startSimulation")
-    public void startSimulation()
+    public List<Vol> startSimulation()
     {
         List<Vol> vols = volService.getAllVol();
         for(Vol vol : vols)
         {
             volService.StartVolGlobal(vol);
         }
+        return vols;
     }
 //    @GetMapping("/startVolGlobalGloabal")
 //    public void startVolGlobalGlobal()

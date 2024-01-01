@@ -136,11 +136,13 @@ public class VolService {
                     voltrajet = addVol(Long.valueOf(entry.getValue()), Long.valueOf(nextValue), volglobal);
                     i++;
                     StartVol(voltrajet);
+                    volRepository.save(voltrajet);
                 }
             }
         }
         volglobal.getAvion().setDisponibilite(true);
         volglobal.setArrived(true);
+        volRepository.save(volglobal);
         avionService.saveAvion(volglobal.getAvion());
     }
     public void StartVol(Vol vol)
@@ -183,6 +185,7 @@ public class VolService {
                             aeroportRepository.save(newvol.getAeroportArrivee());
                             newvol.getAeroportArrivee().getAvionsSol().add(newvol.getAvion());
                             newvol.setArrived(true);
+                            volRepository.save(newvol);
                             aeroportRepository.save(newvol.getAeroportArrivee());
                         return;
                         }

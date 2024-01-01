@@ -1,5 +1,6 @@
 package com.example.controle_aerien.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -23,11 +24,12 @@ public class DistanceAeroportId implements Serializable {
 
 
     private static final long serialVersionUID=1L;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aeroport_1_id",referencedColumnName = "id")
     private Aeroport aeroport1;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aeroport_2_id",referencedColumnName = "id")
     private Aeroport aeroport2;

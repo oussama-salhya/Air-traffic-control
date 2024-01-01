@@ -40,10 +40,11 @@ public class Aeroport {
     private List<DistanceAeroport> distancesToHere;
 
     private double secteur;
-
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Avion> avionsSol;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Avion> avionsVol;
 
