@@ -1,7 +1,10 @@
 package com.example.controle_aerien.controllers;
 
 import com.example.controle_aerien.DTO.VolDTO;
+import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.entities.Vol;
+import com.example.controle_aerien.services.AeroportService;
+import com.example.controle_aerien.services.AvionService;
 import com.example.controle_aerien.services.VolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,10 @@ public class VolController {
 
     @Autowired
     private VolService volService;
+    @Autowired
+    private AvionService avionService;
+    @Autowired
+    private AeroportService aeroportService;
 
 
     @GetMapping("/vols")
@@ -40,17 +47,7 @@ public class VolController {
         return volsEscale;
     }
 
-//    @GetMapping("/startVolGlobal/{id}")
-//    public ResponseEntity<VolDTO> startVolGlobal(@PathVariable Long id)
-//    {   Vol vol = volService.getVolById(id);
-//        if(vol!=null) {
-//            volService.StartVolGlobal(vol);
-//            VolDTO volDTO = vol.toDTO();
-//            return ResponseEntity.ok(volDTO);//200 OK
-//        }
-//        else
-//            return ResponseEntity.notFound().build();//404 NOT FOUND
-//    }
+
     @GetMapping("/startSimulation")
     public List<Vol> startSimulation()
     {
@@ -106,4 +103,20 @@ public class VolController {
     {
         volService.deleteVolById(id);
     }
+
+    @PostMapping("/addVol")
+    public ResponseEntity<String> addVol(@RequestBody Vol vol) {
+        try {
+
+            Avion avion = new Avion("avion" + vol.getId());
+            avion = avionService.saveAvion(avion);
+            avion.setNom("avion" + avion.getId());
+            aeroportService.AddAvionToAeroport(vol.getAeroportDepart().getId(), avion.getId());
+            volService.addVol(vol.getAeroportDepart().getId(), vol.getAeroportArrivee().getId(), null);
+            return ResponseEntity.ok("Vol ajouté avec succès!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erreur: Vol non ajouté!");
+        }
+    }
+
 }

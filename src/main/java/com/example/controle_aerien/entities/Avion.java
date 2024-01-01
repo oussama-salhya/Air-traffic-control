@@ -34,7 +34,8 @@ public class Avion {
 
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name ="point_id", referencedColumnName = "id")
     private Point position;
 
 

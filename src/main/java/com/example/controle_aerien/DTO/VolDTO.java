@@ -15,6 +15,7 @@ public class VolDTO {
     private Long aeroportArriveeId;
     private VolDTO parentVol;
     private AvionDTO avion;
+    private boolean isArrived;
 
 
     public VolDTO(Vol vol) {
@@ -22,6 +23,7 @@ public class VolDTO {
         this.aeroportDepartId = vol.getAeroportDepart().getId();
         this.aeroportArriveeId = vol.getAeroportArrivee().getId();
         this.avion = new AvionDTO(vol.getAvion());
+        this.isArrived = vol.isArrived();
 
         // Convert the parentVol to VolDTO recursively
         if (vol.getParentVol() != null) {

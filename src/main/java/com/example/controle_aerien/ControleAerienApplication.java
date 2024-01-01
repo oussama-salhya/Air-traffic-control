@@ -103,8 +103,10 @@ public class ControleAerienApplication {
         //Avion avion = avionService.getALLAvions().get(0);
 
         aeroportService.AddAvionToAeroport(aeroport5.getId(),avion1.getId());
-        aeroportService.AddAvionToAeroport(aeroport1.getId(),avion2.getId());
         aeroportService.AddAvionToAeroport(aeroport0.getId(),avion3.getId());
+        aeroportService.AddAvionToAeroport(aeroport2.getId(),avion2.getId());
+
+//        aeroportService.AddAvionToAeroport(aeroport1.getId(),avion2.getId());
 
 
         for(Avion avion : avionService.getALLAvions())
@@ -113,10 +115,10 @@ public class ControleAerienApplication {
         }
         System.out.println("D1 : " + avion1.isDisponibilite());
 
-        Vol vol = volService.addVol(aeroport0.getId(),aeroport5.getId(),null);
-//        Vol vol = volService.addVol(aeroport0.getId(),aeroport8.getId(),null);
-        Vol vol2 = volService.addVol(aeroport1.getId(),aeroport4.getId(),null);
-//        Vol vol3 = volService.addVol(aeroport0.getId(),aeroport6.getId(),null);
+        Vol vol = volService.addVol(aeroport5.getId(),aeroport2.getId(),null);
+        Vol vol1 = volService.addVol(aeroport0.getId(),aeroport3.getId(),null);
+        Vol vol2 = volService.addVol(aeroport2.getId(),aeroport4.getId(),null);
+//        Vol vol3 = volService.addVol(aeroport2.getId(),aeroport6.getId(),null);
 
 
         for(Avion avion : avionService.getALLAvions())
