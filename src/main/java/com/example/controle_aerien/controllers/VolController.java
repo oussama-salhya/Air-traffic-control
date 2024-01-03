@@ -59,7 +59,10 @@ public class VolController {
         List<Vol> vols = volService.getAllVol();
         for(Vol vol : vols)
         {
-            volService.StartVolGlobal(vol);
+            if(vol.isArrived()==false)
+            {
+                volService.StartVolGlobal(vol);
+            }
         }
         return vols;
     }
