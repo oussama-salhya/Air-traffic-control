@@ -1,6 +1,7 @@
 package com.example.controle_aerien.services;
 import com.example.controle_aerien.entities.Avion;
 import com.example.controle_aerien.dao.AvionRepository;
+import com.example.controle_aerien.entities.TypeAvion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +18,6 @@ public class AvionService {
     }
     //update and save avion
     public Avion saveAvion(Avion avion){
-        if(avion.getType().equals("COURT"))
-        {
-            avion.setConsommation(4);
-            avion.setCapacite(20000);
-        }
-        else if(avion.getType().equals("MOYEN"))
-        {
-            avion.setConsommation(5);
-            avion.setCapacite(40000);
-        }
-        else if(avion.getType().equals("LONG"))
-        {
-            avion.setConsommation(6);
-            avion.setCapacite(80000);
-        }
         return avionrepository.save(avion);
     }
     public List<Avion> getALLAvions(){
@@ -42,5 +28,27 @@ public class AvionService {
             return;
         else avionrepository.deleteById(id);
     }
-
+    public Avion doConsommation(Avion avion){
+        TypeAvion typeAvion = avion.getType();
+        if(typeAvion.equals("COURT"))
+        {
+//            4L/100Km
+            avion.setConsommation(4);
+            avion.setSpeed(300);
+            avion.setCapacite(100);
+        }
+        else if(typeAvion.equals("MOYEN"))
+        {
+            avion.setConsommation(5);
+            avion.setSpeed(400);
+            avion.setCapacite(200);
+        }
+        else if(typeAvion.equals("LONG"))
+        {
+            avion.setSpeed(500);
+            avion.setConsommation(6);
+            avion.setCapacite(300);
+        }
+        return avion;
+    }
 }

@@ -50,7 +50,6 @@ public class Avion {
     public Avion(String nom) {
         super();
         this.nom=nom;
-        this.type=TypeAvion.LONG;
         this.disponibilite = true;
     }
 

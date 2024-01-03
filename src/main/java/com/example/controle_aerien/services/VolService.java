@@ -163,7 +163,7 @@ public class VolService {
             // Assuming avion has x and y coordinates
             double currentX = vol.getAvion().getPosition().getX();
             double currentY = vol.getAvion().getPosition().getY();
-            vol.getAvion().setSpeed(400);
+//            vol.getAvion().setSpeed(400);
             Integer speed = vol.getAvion().getSpeed();
             while (!avionReachedDestination(currentX, currentY, aeroportArriveeId)) {
                 // Update avion position and display progress
@@ -287,7 +287,7 @@ public class VolService {
 
 
 
-            // Calculate the distanceAvionArriv to move based on speed (e.g., 400 km/h)
+            // Calculate the distanceAvionArriv == vitesse to move based on speed (e.g., 400 km/h)
             double distanceAvionArrivToMove = speed / 60.0; // Convert speed to distanceAvionArriv per second
 
 

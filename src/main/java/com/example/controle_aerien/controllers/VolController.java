@@ -1,12 +1,15 @@
 package com.example.controle_aerien.controllers;
 
 import com.example.controle_aerien.DTO.VolDTO;
-import com.example.controle_aerien.entities.Avion;
-import com.example.controle_aerien.entities.Vol;
+import com.example.controle_aerien.dao.AeroportRepository;
+import com.example.controle_aerien.dao.DistanceAeroportRepository;
+import com.example.controle_aerien.entities.*;
 import com.example.controle_aerien.services.AeroportService;
 import com.example.controle_aerien.services.AvionService;
+import com.example.controle_aerien.services.DistanceAeroportService;
 import com.example.controle_aerien.services.VolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,8 @@ public class VolController {
     private AvionService avionService;
     @Autowired
     private AeroportService aeroportService;
+    @Autowired
+    private DistanceAeroportService distanceAeroportService;
 
 
     @GetMapping("/vols")
@@ -118,5 +123,44 @@ public class VolController {
             return ResponseEntity.badRequest().body("Erreur: Vol non ajouté!");
         }
     }
+//    @PostMapping("/addVol")
+//    public ResponseEntity<String> addVol(@RequestBody Vol vol) {
+//        try {
+//
+//            Avion avion = new Avion();
+//            System.out.println("ssss");
+//            avion = avionService.saveAvion(avion);
+//            System.out.println("ssss");
+//            System.out.println("vol = " + vol);
+//            Aeroport aeroportDepart =  aeroportService.getAeroportById(vol.getAeroportDepart().getId());
+//            System.out.println("aeroportDepart = " + aeroportDepart);
+//            Aeroport aeroportArrive =  aeroportService.getAeroportById(vol.getAeroportArrivee().getId());
+//            System.out.println("aeroportArrive = " + aeroportArrive);
+//             double distance = distanceAeroportService.getDistanceBetweenTwoAeroports(aeroportDepart, aeroportArrive);
+//             System.out.println("distance = " + distance);
+//            if (distance < 230) {
+//                avion.setType(TypeAvion.COURT);
+//
+//            } else if (distance<294) {
+//                avion.setType(TypeAvion.MOYEN);
+//
+//            } else {
+//                avion.setType(TypeAvion.LONG);
+//            }
+//            avion = avionService.doConsommation(avion);
+
+//            avion.setNom("avion" + avion.getId());
+//            System.out.println("ssss");
+//            avion = avionService.saveAvion(avion);
+//            System.out.println("ssss");
+//            aeroportService.AddAvionToAeroport(vol.getAeroportDepart().getId(), avion.getId());
+//            System.out.println("ssss");
+//            volService.addVol(vol.getAeroportDepart().getId(), vol.getAeroportArrivee().getId(), null);
+//            return ResponseEntity.ok("Vol ajouté avec succès!");
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return ResponseEntity.badRequest().body("Erreur: Vol non ajouté!");
+//        }
+//    }
 
 }
