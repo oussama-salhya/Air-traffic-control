@@ -126,6 +126,7 @@ public class VolService {
 
         Vol voltrajet;
         int i = 0;
+        double oldCapacite = volglobal.getAvion().getCapacite();
         Integer nextValue;
 
         for (Map.Entry<String, Integer> entry : dji.entrySet()) {
@@ -137,6 +138,8 @@ public class VolService {
                     i++;
                     StartVol(voltrajet);
                     voltrajet.setArrived(true);
+                    voltrajet.getAvion().setCapacite(oldCapacite);
+                    avionService.saveAvion(voltrajet.getAvion());
                     volRepository.save(voltrajet);
                 }
             }
@@ -197,7 +200,7 @@ public class VolService {
                             vol.getAvion().setAeroport(vol.getAeroportArrivee());
                             //vol.getAvion().setPosition(vol.getAeroportArrivee().getPosition());
                             avionService.saveAvion(vol.getAvion());
-                        return;
+                            return;
                         }
                     }
                 }
@@ -226,9 +229,9 @@ public class VolService {
             double distanceAvionDepart = Math.sqrt(deltaXD * deltaXD + deltaYD * deltaYD);
 
             if(distanceAvionArriv < 50)//ATTERISSAGE
-                {
-                    synchronized (lockObject2) {
-                        Vol newvol = volRepository.findById(vol.getId()).get();
+            {
+                synchronized (lockObject2) {
+                    Vol newvol = volRepository.findById(vol.getId()).get();
 //                        Vol newvol = vol;
 
                     if (newvol.getAeroportDepart().getAvionsVol().contains(newvol.getAvion())) {
@@ -249,37 +252,45 @@ public class VolService {
                     speed = speed - 20;
                 }
             }
-                if (distanceAvionDepart < 50) {
+            else if (distanceAvionDepart < 50) {
 
-                    synchronized (lockObject) {
-                            Vol newvol = volRepository.findById(vol.getId()).get();
-                        if (newvol.getAeroportDepart().getAvionsSol().contains(newvol.getAvion())) {
-                            System.out.println("DECOLAGE--------------------------");
+                synchronized (lockObject) {
+                    Vol newvol = volRepository.findById(vol.getId()).get();
+                    if (newvol.getAeroportDepart().getAvionsSol().contains(newvol.getAvion())) {
+                        System.out.println("DECOLAGE--------------------------");
 
-                            for (Avion avion : vol.getAeroportDepart().getAvionsSol()) {
-                                System.out.println("AvionDS : " + avion.getId());
-                            }
-
-                            for (Avion avion : vol.getAeroportDepart().getAvionsVol()) {
-                                System.out.println("AvionDV : " + avion.getId());
-                            }
-                            System.out.println("NEW VOL ID : " + newvol.getId());
-    //                        Vol newvol = vol;
-                            newvol.getAeroportDepart().getAvionsSol().remove(newvol.getAvion());
-                            aeroportService.removeAvionFromAvionsSol(newvol.getAeroportDepart().getId(), newvol.getAvion());
-                            //update vol by the newvol
-                            aeroportRepository.save(newvol.getAeroportDepart());
-
-                            newvol.getAeroportDepart().getAvionsVol().add(newvol.getAvion());
-                            aeroportRepository.save(newvol.getAeroportDepart());
+                        for (Avion avion : vol.getAeroportDepart().getAvionsSol()) {
+                            System.out.println("AvionDS : " + avion.getId());
                         }
-                    }
 
-                    speed = speed + 20;
+                        for (Avion avion : vol.getAeroportDepart().getAvionsVol()) {
+                            System.out.println("AvionDV : " + avion.getId());
+                        }
+                        System.out.println("NEW VOL ID : " + newvol.getId());
+                        //                        Vol newvol = vol;
+                        newvol.getAeroportDepart().getAvionsSol().remove(newvol.getAvion());
+                        aeroportService.removeAvionFromAvionsSol(newvol.getAeroportDepart().getId(), newvol.getAvion());
+                        //update vol by the newvol
+                        aeroportRepository.save(newvol.getAeroportDepart());
+
+                        newvol.getAeroportDepart().getAvionsVol().add(newvol.getAvion());
+                        aeroportRepository.save(newvol.getAeroportDepart());
+                    }
                 }
-                    System.out.println(speed);
-                    System.out.println("distanceAvionDepart :" + distanceAvionDepart);
-                    System.out.println("distanceAvionArriv :" + distanceAvionArriv);
+
+                speed = speed + 20;
+            }
+            else
+            {
+                if(vol.isArrived() == false)
+                {
+                    vol.getAvion().setCapacite(vol.getAvion().getCapacite()-vol.getAvion().getConsommation());
+                    System.out.println("CAPACITE : " + vol.getAvion().getCapacite());
+                }
+            }
+            System.out.println(speed);
+            System.out.println("distanceAvionDepart :" + distanceAvionDepart);
+            System.out.println("distanceAvionArriv :" + distanceAvionArriv);
 
 
             double directionX = deltaXA / distanceAvionArriv;
@@ -291,17 +302,18 @@ public class VolService {
             double distanceAvionArrivToMove = speed / 60.0; // Convert speed to distanceAvionArriv per second
 
 
+
             // Calculate the new position
 //            synchronized (lockObject) {
-                if(distanceAvionArriv < 10)
-                {
-                    newX = vol.getAeroportArrivee().getPosition().getX();
-                    newY = vol.getAeroportArrivee().getPosition().getY();
-                }
-                else {
-                    newX = vol.getAvion().getPosition().getX() + (directionX * distanceAvionArrivToMove);
-                    newY = vol.getAvion().getPosition().getY() + (directionY * distanceAvionArrivToMove);
-                }
+            if(distanceAvionArriv < 10)
+            {
+                newX = vol.getAeroportArrivee().getPosition().getX();
+                newY = vol.getAeroportArrivee().getPosition().getY();
+            }
+            else {
+                newX = vol.getAvion().getPosition().getX() + (directionX * distanceAvionArrivToMove);
+                newY = vol.getAvion().getPosition().getY() + (directionY * distanceAvionArrivToMove);
+            }
 //            }
 
 
@@ -339,3 +351,4 @@ public class VolService {
 //        StartVolGlobal(vol);
 //    }
 }
+
