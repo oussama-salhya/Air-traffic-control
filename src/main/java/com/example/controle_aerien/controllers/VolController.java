@@ -98,7 +98,7 @@ public class VolController {
         {
             return ResponseEntity.notFound().build();
         }
-        oldVol.setAvion(newVol.getAvion());
+        oldVol.setAvion(newVol  .getAvion());
         oldVol.setHeureDepart(newVol.getHeureDepart());
         oldVol.setHeureArrivee(newVol.getHeureArrivee());
         oldVol.setAeroportDepart(newVol.getAeroportDepart());
@@ -114,7 +114,10 @@ public class VolController {
 
     @PostMapping("/addVol")
     public ResponseEntity<String> addVol(@RequestBody Vol vol) {
-
+        Aeroport aeroportDepart = aeroportService.getAeroportById(vol.getAeroportDepart().getId());
+        if(aeroportDepart.getAvionsSol().size() >= aeroportDepart.getNbPlaceSol()){
+            return ResponseEntity.badRequest().body("L'aeroport n'a pas assez de place pour accueillir un nouvel avion");
+        }
         Avion avion = new Avion("avion" + vol.getId());
         avion = avionService.saveAvion(avion);
         avion.setNom("avion" + avion.getId());

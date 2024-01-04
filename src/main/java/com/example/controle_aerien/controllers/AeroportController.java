@@ -21,8 +21,6 @@ public class AeroportController {
 
     @Autowired
     private AeroportService aeroportService;
-    @Autowired
-    private DistanceAeroportService distanceAeroportService;
 
 
     @GetMapping("/aeroports")

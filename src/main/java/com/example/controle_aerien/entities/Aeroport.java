@@ -56,14 +56,26 @@ public class Aeroport {
         this.position=position;
         this.disponibilite=true;
         this.nbPlaceSol=5;
+        this.tmpAccPist=120;
+        this.delaiAntiColis=120;
+        this.delaiAttente= 60;
+        this.tmpDecolage= 90;
+        this.durreboucleatt=200;
     }
     public Aeroport(String nom, Point position){
         this.nom = nom;
         this.position = position;
         this.disponibilite=true;
-        this.nbPlaceSol=5;
-//        this.idtest=idtest;
-//        this.idtest=(int)this.getId();
+        this.nbPlaceSol = generateRandomNumber(5, 10);  // Example range: 2 to 10
+        this.tmpAccPist = generateRandomNumber(2, 15);  // Example range: 60 to 180
+        this.delaiAntiColis = generateRandomNumber(3, 17);  // Example range: 60 to 180
+        this.delaiAttente = generateRandomNumber(4, 13);  // Example range: 30 to 90
+        this.tmpDecolage = generateRandomNumber(1, 12);  // Example range: 60 to 120
+        this.durreboucleatt = generateRandomNumber(2, 18);  // Example range: 150 to 300
+        this.nbPiste = generateRandomNumber(2, 5);  // Example range: 150 to 300
+    }
+    private int generateRandomNumber(int min, int max) {
+        return (int) (Math.random() * (max - min + 1)) + min;
     }
 
 

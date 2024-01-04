@@ -57,13 +57,13 @@ public class ControleAerienApplication {
 //        Aeroport aeroport7 = new Aeroport(8, new Point(329, 270));
 //        Aeroport aeroport8 = new Aeroport(9, new Point(677, 559));
 
-        Aeroport aeroport0 = new Aeroport("ammerica", new Point(270,170));
-        Aeroport aeroport1 = new Aeroport("australie", new Point(1020,538));
-        Aeroport aeroport2 = new Aeroport("brasil", new Point(400,468));
-        Aeroport aeroport3 = new Aeroport("south_africa", new Point(651,542));
-        Aeroport aeroport4 = new Aeroport("maroc", new Point(538,297));
-        Aeroport aeroport5 = new Aeroport("russia", new Point(840,130));
-        Aeroport aeroport6 = new Aeroport("japan", new Point(1035,259));
+        Aeroport aeroport0 = new Aeroport("America", new Point(270,170));
+        Aeroport aeroport1 = new Aeroport("Australia", new Point(1020,538));
+        Aeroport aeroport2 = new Aeroport("Brazil", new Point(400,468));
+        Aeroport aeroport3 = new Aeroport("South Africa", new Point(651,542));
+        Aeroport aeroport4 = new Aeroport("Morocco", new Point(538,297));
+        Aeroport aeroport5 = new Aeroport("Russia", new Point(840,130));
+        Aeroport aeroport6 = new Aeroport("Japan", new Point(1035,259));
 
 
         aeroportService.saveAeroport(aeroport0);
