@@ -17,7 +17,10 @@ The system is built using the following technologies:
 * **Java** 
 * **Spring Boot**
 * **Spring Data JPA**
-* **MySQL** A relational database for storing aircraft data.
+* **MySQL** 
+* **HTML**
+* **CSS** 
+* **JavaScript**
   
 ### Getting Started
 
@@ -25,19 +28,6 @@ To run the system, you will need to:
 
 1. Clone the repository.
 2. Install the required dependencies.
-3. Start the PostgreSQL database.
+3. Start the MySQL database.
 4. Run the Spring Boot application.
 
-Detailed instructions on how to set up and run the system are available in the `README.md` file within the repository.
-
-### Contributing
-
-Contributions are welcome! Please refer to the `CONTRIBUTING.md` file for guidelines on how to contribute to the project.
-
-### License
-
-This project is licensed under the MIT License.
-
-### Disclaimer
-
-This project is for educational purposes only and is not intended for use in real-world air traffic control operations.
