@@ -7,7 +7,6 @@ This repository contains the source code for an air traffic control system devel
 * **Real-time aircraft tracking:** The system tracks the position and altitude of each aircraft in the airspace.
 * **Conflict detection and resolution:** The system identifies potential conflicts between aircraft and provides instructions to avoid them.
 * **Route planning and optimization:** The system calculates optimal routes for aircraft to minimize delays and fuel consumption.
-* **Communication with pilots:** The system allows controllers to communicate with pilots via text messages and voice chat.
 * **Data visualization:** The system provides a graphical interface for controllers to visualize the airspace and aircraft movements.
 
 ### Technologies
