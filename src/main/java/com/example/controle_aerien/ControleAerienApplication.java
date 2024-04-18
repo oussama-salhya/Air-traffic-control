@@ -56,7 +56,7 @@ public class ControleAerienApplication {
 //        Aeroport aeroport6 = new Aeroport(7, new Point(998, 357));
 //        Aeroport aeroport7 = new Aeroport(8, new Point(329, 270));
 //        Aeroport aeroport8 = new Aeroport(9, new Point(677, 559));
-        
+
         Aeroport aeroport0 = new Aeroport("America", new Point(270,170));
         Aeroport aeroport1 = new Aeroport("Australia", new Point(1020,538));
         Aeroport aeroport2 = new Aeroport("Brazil", new Point(400,468));
