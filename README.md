@@ -2,6 +2,8 @@
 
 This repository contains the source code for an air traffic control system developed as a university project. The system is designed to manage the movement of aircraft in a simulated airspace, ensuring safe and efficient operations.
 
+[SkyNavigator.webm](https://github.com/user-attachments/assets/63255da4-1f38-4c7a-9465-5cf86699b06a)
+
 ### Features
 
 * **Real-time aircraft tracking:** The system tracks the position and altitude of each aircraft in the airspace.
